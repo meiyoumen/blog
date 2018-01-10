@@ -19,7 +19,8 @@ class IDBStore {
         console.log('open database success')
         resolve()
       }
-      request.onupgradeneeded = () => {
+      request.onupgradeneeded = (event) => {
+        console.log(event)
         console.log('version change')
         this.db = request.result
         this.storeList.forEach(store => {

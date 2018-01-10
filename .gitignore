@@ -43,7 +43,7 @@ jspm_packages
 .vscode
 *.my
 tmp
-/dist
+dist
 /yarn.lock
 /.yarnrc
 static
