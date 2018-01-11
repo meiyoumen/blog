@@ -2,3 +2,4 @@
 - indexedDB
 - sav-vuex
 - rollup-build
+- vue
