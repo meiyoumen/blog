@@ -3,3 +3,4 @@
 - sav-vuex
 - rollup-build
 - vue
+- shell
