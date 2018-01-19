@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script>
+  </script>
+  <style>
+    * {
+      -webkit-user-select: none;
+      margin: 0;
+      padding: 0;
+    }
+    canvas, svg {
+      border: 2px solid #ddd
+    }
+    path {
+      stroke: #05D380;
+      stroke-width: 2;
+      fill: none;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <canvas id="canvas" width="500" height="600"></canvas>
+  <svg width="500" height="600" id="mysvg">
+    <path v-bind:d="paths"></path>
+  </svg>
+</div>
+<script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
+<script>
+  let mousePressed = false
+  let lastX = 0
+  let lastY = 0
+  let ctx
+
+  new Vue({
+    el:'#app',
+    data: {
+      paths:''
+    },
+    methods: {
+      drawInCanvas(x, y, down) {
+        if (down) {
+          console.log(lastX, lastY, x, y)
+          ctx.beginPath()
+          ctx.strokeStyle = 'blue'
+          ctx.lineWidth = 2
+          ctx.lineJoin = 'round'
+          ctx.moveTo(lastX, lastY)
+          ctx.lineTo(x, y)
+          ctx.stroke()
+          ctx.closePath()
+          this.paths += `${'M'} ${lastX} ${lastY} ${'L'} ${x} ${y} `
+        }
+
+        lastX = x
+        lastY = y
+      }
+    },
+    mounted() {
+      let myCanvas = this.$el.querySelector('#canvas')
+      ctx = myCanvas.getContext("2d")
+
+      myCanvas.onmousedown = (e) => {
+        mousePressed = true
+        this.drawInCanvas(e.clientX, e.clientY, false)
+      }
+
+      myCanvas.onmousemove = (e) => {
+        if (mousePressed) {
+          this.drawInCanvas(e.clientX, e.clientY, mousePressed)
+        }
+      }
+
+      myCanvas.onmouseup = myCanvas.onmouseleave = (e) => {
+        if (mousePressed) {
+          mousePressed = false
+        }
+      }
+    }
+  })
+</script>
+</body>
+</html>

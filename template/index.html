@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .warn{height:30px;line-height:30px;background: yellow}
+  </style>
+</head>
+<body>
+<div id="regdom"></div>
+<script>
+  //https://github.com/DDFE/DDFE-blog/issues/25
+  const template = (
+    '<div class="toast_wrap">' +
+    '<div class="msg"><%text%></div>' +
+    '<div class="tips_icon <%iconClass%>"><%warntext%></div>' +
+    '</div>'
+  )
+
+  function templateEngine(source, data) {
+    if (!data) {
+      return source
+    }
+    return source.replace(/<%([^%>]+)?%>/g, function (match, key) {
+      return data[key] ? data[key] : ''
+    })
+  }
+   let source = templateEngine(template, {
+      text: 'hello',
+      iconClass: 'warn',
+      warntext: 'warn'
+    })
+
+  console.log(source)
+  regdom.innerHTML = source
+</script>
+</body>
+</html>
