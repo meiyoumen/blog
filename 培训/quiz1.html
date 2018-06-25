@@ -1,0 +1,169 @@
+<meta charset="UTF-8">
+<style>
+  *{margin: 0;padding: 0}
+</style>
+<script>
+  // 九九乘法表
+  for (let i = 1; i <= 9; i++) {
+    for (let j = 1; j <= i; j++) {
+      document.write(j + '*' + i + '=' + i * j + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+    }
+    document.write("<br/>");
+  }
+</script>
+
+
+<script>
+  /*
+    *
+   ***
+  *****
+ *******
+  */
+  const LINE = 4
+  let i, j;
+  for (i = 0; i < LINE; i++) {
+    for (j = 0; j < (LINE - i); j++) {
+      document.write("&nbsp;");
+    }
+
+    for (j = 0; j < 2 * i + 1; j++) {
+      document.write("*");
+    }
+    document.write("<br/>");
+  }
+</script>
+
+<script>
+  //去除重复的 name
+  let list = [
+    {name : '111', text : 1},
+    {name : '222', text : 2},
+    {name : '111', text : 3},
+    {name : '222', text : 4},
+    {name : '333', text : 5}
+  ];
+
+  function arrayObjectUnique (arr) {
+    let uniqueArr = []
+    let isE = false
+    uniqueArr.push(arr[0])
+
+    for (let i = 1; i < arr.length; i++) {
+      isE = false
+      for (let j = 0; j < uniqueArr.length; j++) {
+        if (arr[i].name === uniqueArr[j].name) {
+          isE = true
+          break
+        }
+      }
+      if (!isE) {
+        uniqueArr.push(arr[i])
+      }
+    }
+    return uniqueArr
+  }
+
+  console.log(arrayObjectUnique(list))
+
+</script>
+
+<script>
+  // sort排序
+  var scores = [1, 10, 21, 2]
+  // 数字比较 优化
+  scores.sort((a, b) => a-b)
+  console.log(scores) //正确输出 [1, 2, 10, 21]
+
+
+  //按照value：
+  var items = [
+    { name: 'Edward', value: 21 },
+    { name: 'Sharpe', value: 37 },
+    { name: 'And', value: 45 },
+    { name: 'The', value: -12 },
+    { name: 'Magnetic',value: 1 },
+    { name: 'Zeros', value: 37 }
+  ];
+
+  // sort by value
+  items.sort(function (a, b) {
+    return a.value - b.value
+  })
+</script>
+
+<script>
+
+    /*
+    输入某年某月某日，判断这一天是这一年的第几天？ 如：2018-06-21
+    1.分析问题：基本算法为之前月份的天数和加当前天，例如3月8日，需要用1,2月份的总天数加8。
+    但要考虑特殊情况，如果是闰年，那么2月不再是28天，而是29天，此时如果月份大于2，那么之前月份的天数和则应加1才对。
+    */
+
+    let d = new Date('2018-1-2')
+    let year, month, day;
+    year = d.getFullYear()
+    month = d.getMonth()+1
+    day=d.getDate()
+
+    console.log(year, month, day)
+
+    let leap;
+    let sum;
+
+    switch (month)
+    {
+      case 1:
+        sum = 0;
+        break;
+      case 2:
+        sum = 31;
+        break;
+      case 3:
+        sum = 59;
+        break;
+      case 4:
+        sum = 90;
+        break;
+      case 5:
+        sum = 120;
+        break;
+      case 6:
+        sum = 151;
+        break;
+      case 7:
+        sum = 181;
+        break;
+      case 8:
+        sum = 212;
+        break;
+      case 9:
+        sum = 243;
+        break;
+      case 10:
+        sum = 273;
+        break;
+      case 11:
+        sum = 304;
+        break;
+      case 12:
+        sum = 334;
+        break;
+      default:
+        console.log("data errer \n")
+        break;
+    }
+
+    sum = sum + day;
+
+    //判断是否为闰年 四年一闰,百年不闰; 四百年再闰
+    leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ? 1 : 0;
+
+    //润年且月份大于2 加1天
+     sum += leap == 1 && month > 2 ? 1 : 0;
+    /*	if (leap == 1 && month > 2) {
+        sum = sum + 1;
+      }*/
+
+    console.log(sum)
+</script>
