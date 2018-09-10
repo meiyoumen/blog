@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <button type="button" @click="pushEle">push ele</button>
+  <div v-for="(ele, key) in elements.ele">
+    <quiz :quiz-name="msg">
+      <component
+          slot="body"
+          class="figure-item"
+          :is="viewMaps[ele.type]"
+          :cur="ele.data"
+      ></component>
+    </quiz>
+  </div>
+</div>
+<template id="quiz">
+  <div>
+    <h5>{{quizName}}</h5>
+    <slot name="body"></slot>
+  </div>
+</template>
+
+<template id="text">
+  <div>
+    <p>{{cur.text}}</p>
+  </div>
+</template>
+
+<template id="img">
+  <div>
+    <p>{{cur.text}}</p>
+  </div>
+</template>
+
+<script>
+  var VM = new Vue({
+    el: '#app',
+    data() {
+      return {
+        count:0,
+        msg: '题目',
+        viewMaps: {
+          text: 'TextView',
+          image: 'ImageView'
+        },
+        elements: {
+          ele: []
+        },
+
+        list: [
+          {
+            "queId": "6959e998e47445ca8300aeee3b4c5b69",
+            "subjectName": "数学",
+            "subjectId": "2",
+            "gradeGroupName": "小学",
+            "gradeGroupId": "1",
+            "difficulty": 2,
+            "content": "这是题干",
+            "answer": [["D"]],
+            "analysis": ["这是解析"],
+            "queSource": "2017年北京小学中年级四年级上学期学而思",
+          },
+          {
+            "queId": "6959e998e47445ca8300aeee3b4c5b78",
+            "subjectName": "语文",
+            "subjectId": "3",
+            "gradeGroupName": "小学",
+            "gradeGroupId": "2",
+            "difficulty": 3,
+            "content": "题干",
+            "answer": [["D"]],
+            "analysis": ["解析"],
+            "queSource": "2017年上海小学中年级四年级上学期新东方",
+          },
+        ]
+      }
+    },
+    methods: {
+      pushEle(){
+        if(this.count === 0) {
+          this.elements.ele.push({
+            data: {op: "edit", size: "18", color: "#FF0000", w: 248, x: 338, text: 'text'},
+            type:"text"
+          })
+        }
+        if(this.count === 1) {
+          this.elements.ele.push({
+            data: {op: "edit", size: "18", color: "#FF0000", w: 248, x: 338, text: 'img'},
+            type:"image"
+          })
+        }
+        this.count =  ++ this.count
+      }
+    },
+    components: {
+      quiz: {
+        template: '#quiz',
+        props: ['quizName']
+      },
+      TextView: {
+        template: '#text',
+        props: ['cur']
+      },
+      ImageView: {
+        template: '#img',
+        props: ['cur']
+      }
+    }
+  })
+</script>
+</body>
+</html>

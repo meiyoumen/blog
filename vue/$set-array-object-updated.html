@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <title>Slot content extend Demo</title>
+</head>
+<body>
+<h1>Array Demo</h1>
+<hr>
+<div id="app">
+  <div style="border: 1px dashed #ccc;padding: 10px;width:260px;float: left;margin-right: 10px">
+    <button type="button" @click="change1">change</button>
+    <button type="button" @click="change2">$set</button>
+    <ul>
+      <li v-for="(it, key) in subjects"> {{it.name}} - {{it.id}}</li>
+    </ul>
+  </div>
+  <div style="border: 1px dashed #ccc;padding: 10px;width:260px;float: left;margin-right: 10px">
+    <button type="button" @click="change3">change</button>
+    <button type="button" @click="change4">$set</button>
+    <ul>
+      <li v-for="(it, key) in score"> {{it}}</li>
+    </ul>
+  </div>
+  <div style="border: 1px dashed #ccc;padding: 10px;width:260px;float: left;margin-right: 10px">
+    <button type="button" @click="addAge">$set add age</button><span>{{user.name}} - {{user.age}}</span>
+    <pre>{{ $data | json }}</pre>
+  </div>
+</div>
+
+<script type="text/javascript">
+  const app = new Vue({
+    el: '#app',
+    data() {
+      return {
+        subjects: [
+          {name: '数学', id: 10},
+          {name: '语文', id: 20},
+          {name: '英语', id: 30},
+        ],
+        score:[70, 80, 90],
+        user: {
+          name: '小明'
+        }
+      }
+    },
+    updated() {
+      console.log('数据更新', this.subjects[0])
+    },
+    methods: {
+      // 可以改变
+      change1() {
+        this.subjects[0].id = 100
+        console.log(111, this.subjects[0])
+      },
+      // 可以改变
+      change2() {
+        let subject =  this.subjects[0]
+        subject.id = 1000
+        this.$set(this.subjects, 0, subject)
+        console.log(222, this.subjects[0])
+      },
+      // 不可以改变
+      change3() {
+        this.score[0] = 700
+        console.log(333, this.score[0])
+      },
+      // 可以改变
+      change4() {
+        this.$set(this.score, 0, 700)
+        console.log(444, this.score[0])
+      },
+
+      addAge(){
+       // this.user.age = 12                                           // 不可以，改变不了
+       // this.$set(this.user, 'age', 12)                              // 可以改变
+        this.user = Object.assign({}, this.user, {age: 1, sex: '男'})  // 可以改变
+      }
+
+    }
+  })
+  /**
+   * http://wangyaxing.top/2018/04/15/2018-04-15-vue%E4%B8%AD%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93(%E4%B8%80)/
+   简单的解释一下原理:
+   vue在创建实例的时候把data深度遍历所有属性,并使用 Object.defineProperty 把这些属性全部转为 getter/setter。
+   让 Vue 追踪依赖，在属性被访问和修改时通知变化。
+   所以属性必须在 data 对象上存在才能让 Vue 转换它，这样才能让它是响应的。
+   当你在对象上新加了一个属性 newProperty,当前新加的这个属性并没有加入vue检测数据更新的机制(因为是在初始化之后添加的),
+   vue.$set是能让vue知道你添加了属性, 它会给你做处理
+   */
+</script>
+</body>
+</html>

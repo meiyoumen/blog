@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>vuex</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+  <style>
+    body{background:#fff}
+    .box{}
+    .box p{margin-right:10px;float:left;background:#ddd;padding:5px;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <div>
+    {{com.lesson.name}}
+    <input v-model.number="count" />
+  </div>
+  <div class="box">
+    <count></count>
+  </div>
+</div>
+<script>
+  let com= {
+    lesson: {
+      name: 'ABCDEFt'
+    }
+  }
+  var store = new Vuex.Store({
+    state:{
+      count: 10,
+      countNumber:0
+    },
+    getters:{
+      count:function(state){
+        return state.count
+      },
+      countNumber:function(state){
+        return state.countNumber
+      },
+      square:function(state){
+        return state.count*state.count
+      }
+    },
+    mutations: {
+      inc: function(state){
+
+        return state.count++
+      },
+      dec:function(state){
+        return state.count--
+      },
+      updateCount:function(state,value){
+        return state.count=value
+      },
+      upNumber:function(state){
+        return state.countNumber++
+      }
+    },
+    actions:{
+      inc:function(context){
+        //此处可异步处理，执行一些判断
+        context.commit("inc")
+      },
+      dec:function(context){
+        context.commit("dec")
+      },
+      updateCount:function(context,value){
+        context.commit("updateCount",value)
+      },
+      upNumber:function(context){
+        context.commit("upNumber")
+      }
+    }
+  });
+
+  var COUNTCOM={
+    template:`
+     <div>
+          <button @click="inc">+</button>
+          <button @click="dec">-</button>
+         <div>
+            <p >data:{{countData}} == <span v-once>{{countNumber}}</span></p>
+            <p>count：{{count}}</p>
+            <p>count的平方：{{square}}</p>
+          </div>
+
+    </div> `,
+    data:function(){
+      return {countData:"Components datas"}
+    },
+    computed:{
+      ...Vuex.mapState({
+        count: state => state.count,
+        countNumber: state => state.countNumber
+      }),
+
+      square:Vuex.mapGetters({
+        square:"square"
+      }).square
+    },
+
+    methods:{
+      ...Vuex.mapActions({
+        inc:"inc",
+        dec:"dec"
+      })
+    },
+
+    created:function(){
+      this.$store.dispatch("upNumber")
+    }
+  }
+  var app = new Vue({
+    el: '#app',
+    store,
+    computed:{
+      count:{
+        get:function(){
+          return this.$store.state.count;
+        },
+        set:function(value){
+          this.$store.dispatch("updateCount",value)
+        }
+      }
+    },
+    components:{
+      count: COUNTCOM
+    }
+  })
+</script>
+</body>
+</html>

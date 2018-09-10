@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <button @click="dataFn">1.dataFn</button>
+  <!--输出：<window>,[MouseEvent]-->
+
+  <button @click="dataFn()">2.dataFn()</button>
+  <!--输出：Vue,[]-->
+
+  <button @click="methodsFn">3.methodsFn</button>
+  <!--输出：Vue,[MouseEvent]-->
+
+  <button @click="methodsFn()">4.methodsFn()</button>
+  <!--输出：Vue,[]-->
+
+  <button @click="dataFn($event)">5.dataFn($event)</button>
+  <!--输出：Vue,[MouseEvent]-->
+
+  <button @click="methodsFn($event)">6.methodsFn($event)</button>
+  <!--输出：Vue,[MouseEvent]-->
+
+</div>
+<script>
+  var vm = new Vue({
+    el: "#app",
+    data: {
+      dataFn: function() {
+        console.log(this,arguments);
+      }
+    },
+    methods: {
+      methodsFn: function() {
+        console.log(this,arguments);
+      }
+    }
+  });
+  /**
+   * 遂最终结论为：应当把所有VM中的函数都放在methods中，同时对于事件的绑定应当使用无括号方式。即上述示例3中为最优方案。
+   PS：当然你也可以使用vue内置的$event来显示的传递event对象，以保证函数写在任何位置都可以正常使用this和event。
+   */
+</script>
+</body>
+</html>

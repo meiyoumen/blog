@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <p>{{ total }}</p>
+  <button-counter @imt="getIncrementTotal" ref="btn1"></button-counter>
+  <button-counter @imt="getIncrementTotal" ref="btn2"></button-counter>
+  <div ref="div1"></div>
+</div>
+<script>
+  Vue.component('button-counter', {
+    template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+    data: function () {
+      return {
+        counter: 0
+      }
+    },
+    methods: {
+      incrementCounter: function () {
+        this.counter += 1
+        this.$emit('imt') //触发父组件中getIncrementTotal()方法
+      }
+    },
+  })
+
+  let vm=new Vue({
+    el: '#app',
+    data: {
+      total: 0
+    },
+    methods: {
+      getIncrementTotal: function () {
+        this.total += 1
+      }
+    },
+    mounted() {
+      console.log(this.$refs)
+    }
+  })
+</script>
+</body>
+</html>

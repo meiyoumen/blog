@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <button type="button" v-on:click="currentView = 'ComponentA'">ComponentA</button>
+    <button type="button" v-on:click="currentView = 'ComponentB'">ComponentB</button>
+    <button type="button" v-on:click="currentView = 'ComponentC'">ComponentC</button>
+    <keep-alive>
+        <component :is="currentView" ></component>
+    </keep-alive>
+</div>
+<script>
+    var VM=new Vue({
+        el: '#app',
+        data: {
+            currentView: 'ComponentA'
+        },
+        components: {
+            ComponentA: {
+                template: '<div>{{message}}</div>',
+                data() {
+                    return {
+                        message: ''
+                    }
+                },
+                activated() {
+                    this.message = 'I am ComponentA'
+                }
+            },
+            ComponentB: {
+                template: '<div>{{message}} ----{{hello}}</div>',
+                data() {
+                    return {
+                        message: '',
+                        hello:''
+                    }
+                },
+                activated() {
+                    this.message = 'I am ComponentB';
+                    this.hello="hello world";
+                }
+            },
+            ComponentC: {
+                template: '<div>{{message}}</div>',
+                data() {
+                    return {
+                        message: ''
+                    }
+                },
+                activated() {
+                    this.message = 'I am ComponentC';
+                    alert(this.message)
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

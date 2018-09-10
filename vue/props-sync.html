@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <!--<script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>-->
+</head>
+<body>
+<div id="app">
+
+  <!--外部控制-->
+  <button type="button" @click="change">father: {{result?'开':'关'}}</button>
+
+  <!--开关组件-->
+  <switchbtn :result="result" @on-change="onChange"></switchbtn>
+
+</div>
+<script>
+  /**
+   * https://www.cnblogs.com/xxcanghai/p/6124699.html?_t=t
+   总结：简单的嵌套可以考虑事件传递修改，多层时还是建议用flux
+   */
+
+  Vue.component("son",{
+    template:"<button type='button' @click='change'>grandson: {{myResult?'开':'关'}}</button>",
+    props:["myResult"],
+    methods:{
+      change(){
+        //组件内可以props的值，但是不会同步到组件外层
+        this.myResult=!this.myResult
+      }
+    }
+  });
+
+  //开关组件代码
+  Vue.component("switchbtn",{
+    template:`
+       <div style="border: 1px solid red">
+          <button type='button' @click='change'>son: {{myResult?'开':'关'}}</button>
+          <son :my-result="myResult"></son>
+        </div>
+    `,
+    props:["result"],
+    data(){
+      return {
+        myResult: this.result
+      }
+    },
+    methods:{
+      change(){
+        //组件内可以props的值，但是不会同步到组件外层
+        this.result=!this.result
+      }
+    },
+    watch: {
+      result(val) {
+        this.myResult = val   //新增result的watch，监听变更并同步到myResult上
+      },
+      myResult(val) {
+        this.$emit('on-change', val) //通知改变父层result
+      }
+    },
+  });
+
+
+  let vm = new Vue({
+    el: '#app',
+    data:{
+      result:true//开关状态数据
+    },
+    methods:{
+      change(){
+        this.result=!this.result
+      },
+      onChange (val) {
+        console.log(val)
+        this.result = val  //④外层调用组件方注册变更方法，将组件内的数据变更，同步到组件外的数据状态中
+      }
+    }
+  })
+</script>
+</body>
+</html>

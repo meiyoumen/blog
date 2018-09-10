@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <button type="button" @click="send()">$success</button>
+  <button type="button" @click="send2()">$error</button>
+  <btn></btn>
+</div>
+<template id="btn">
+  <div>
+    <button type="button" @click="gogo">gogo</button>
+  </div>
+</template>
+<script>
+  const AlertUtil = {
+    installed: false,
+    install: (Vue, options = {}) => {
+      if (this.installed) return
+
+      // 合局属性
+      Vue.$msg = 'Global property'
+
+      // 添加实例属性和方法
+      Vue.prototype.$alert = 'AlertUtil'
+      Vue.prototype.$success = (...args) => {
+        console.log(...args)
+      }
+      Vue.prototype.$error = (...args) => {
+        console.error(...args)
+      }
+
+
+      Vue.mixin({
+        // 添加到mixin中的任何内容将被注入到所有组件中。
+        //在这个例子中， mounted() 方法将在组件被挂载到DOM后调用
+        mounted() {
+          console.log('AlertUtil mounted!!!!!!!!')
+        }
+      })
+
+      this.installed = true
+    }
+  }
+
+  // 调用方法1 自动安装
+  /*
+  // 通过<script>标签引用你的插件，并期待插件无需调用Vue.use()便会自动安装
+  if (typeof window !== 'undefined' && window.Vue) {
+     window.Vue.use(MyPlugin)
+   }
+ */
+
+  // 调用方法2 显式调用插件
+  Vue.use(AlertUtil)
+
+  let vm = new Vue({
+    el: '#app',
+    data: {
+      total: 0
+    },
+    methods: {
+      send: function () {
+        this.$success('$app:rm:showname')
+      },
+      send2: function () {
+        this.$error('$app:rm:showage', 123)
+      }
+    },
+    mounted() {
+      console.log(this)
+      console.log(this.constructor.$msg)      // Global property  构造函数
+      console.log(this.constructor.prototype) // 实例
+    },
+    components: {
+      'btn': {
+        template: '#btn',
+        methods: {
+          gogo() {
+            this.$success('gogogo')
+          }
+        }
+      }
+    }
+  })
+
+</script>
+</body>
+</html>

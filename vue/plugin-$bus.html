@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <button type="button" @click="send()">$bus.emit</button>
+  <button type="button" @click="send2()">$bus.$emit</button>
+</div>
+<script>
+  let $bus
+
+  const GloakEvents = {
+    installed: false,
+    install: (Vue, options = {}) => {
+      console.log(options)
+      if(this.installed) return
+      if ($bus) return
+      $bus = Vue.prototype.$bus = new Vue()
+      if ($bus && $bus.on) {
+        $bus.$emit = $bus.emit.bind($bus)
+        $bus.$on = $bus.on.bind($bus)
+        $bus.$once = $bus.once.bind($bus)
+        $bus.$off = $bus.off.bind($bus)
+      } else {
+        $bus.emit = $bus.$emit.bind($bus)
+        $bus.on = $bus.$on.bind($bus)
+        $bus.once = $bus.$once.bind($bus)
+        $bus.off = $bus.$off.bind($bus)
+      }
+    }
+  }
+
+  const EventsListeners = {
+    showName() {
+      console.log('showName')
+    },
+    showAge() {
+      console.log('showAge')
+    }
+  }
+
+  Vue.use(GloakEvents, {decration: 'evnts'})
+
+  $bus.$on('$app:rm:showname', EventsListeners.showName)
+  $bus.$on('$app:rm:showage', EventsListeners.showAge)
+
+  let vm = new Vue({
+    el: '#app',
+    data: {
+      total: 0
+    },
+    methods: {
+      send: function () {
+        this.$bus.emit('$app:rm:showname')
+      },
+      send2: function () {
+        this.$bus.$emit('$app:rm:showage')
+      }
+    },
+    mounted() {
+      console.log(this)
+    }
+  })
+</script>
+</body>
+</html>

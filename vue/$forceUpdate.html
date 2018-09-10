@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+</head>
+<body>
+<!--父组件HTML模板-->
+<div id="app">
+  <div>{{$children.length}}</div> <!--此处显示0，应该为3-->
+  <div>{{child.length}}</div>
+  <div>{{father}}</div>
+  <child ref="c1"></child>
+  <child></child>
+  <child></child>
+</div>
+
+<script>
+
+  /**
+   * vue2.0中若使用组件嵌套，则在父组件执行$forceUpdate()之前模板中$children为空数组
+   触发这个问题有以下几个前提：
+
+   使用组件嵌套，在父组件的模板中访问$children变量
+   在渲染完成后没有再将$children变量写入过父组件的data变量（或其他vm数据）
+   就会触发此问题。
+   */
+
+  //子组件代码
+  Vue.component("child", {
+    template: "<div>child</div>",
+    data() {
+      return {
+        childVal:110
+      }
+    }
+  });
+
+  //vm.$children.length = 3 但界面没有更新显示的是0
+
+  let vm = new Vue({
+    el: "#app",
+    data(){
+      return {
+        father: 0,
+        child: []
+      }
+    },
+    mounted() {
+      // 方法1
+      this.$forceUpdate() //强制重绘
+
+      // 方法2
+      this.child = this.$children
+
+      // 方法3 只有父取子里的值时可以这样做，但少啊
+      console.log(this.$refs.c1.childVal)
+      this.father = this.$refs.c1.childVal
+    }
+  });
+</script>
+</body>
+</html>

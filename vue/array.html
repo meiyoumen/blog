@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <city @change="change" :result="result" :cities = "list"></city>
+
+  <button type="button" @click="add">add</button>
+  <button type="button">{{result?'开':'关'}}</button>
+
+  <div style="border: 1px dotted #ccc;margin: 10px">
+    <ul>
+      <li v-for="(city, key) in list">{{city.name}} - {{city.areaCode}}</li>
+    </ul>
+  </div>
+</div>
+<script>
+  Vue.component('cc', {
+    template:`
+    <ul>
+            <li @click="change(city)" v-for="(city, key) in cities">{{city.name}} - {{city.areaCode}}</li>
+          </ul>
+    `,
+    props:['cities'],
+    data(){
+      return {
+        i: 1000
+      }
+    },
+    methods: {
+      change(city) {
+        for (let c  of this.cities) {
+          if (city.name === c.name) {
+            c.name = 'okok'
+          }
+        }
+      }
+    }
+  })
+
+
+  Vue.component('city',{
+    template:`
+      <div style="border: 1px dotted #ccc;margin: 10px">
+       <button type="button" @click="add">add</button>
+       <button type='button' @click="changeResult">{{result?'开':'关'}}</button>
+         <ul>
+            <li @click="change(city)" v-for="(city, key) in cities">{{city.name}} - {{city.areaCode}}</li>
+          </ul>
+          <cc :cities="cities"></cc>
+      </div>
+    `,
+    props:['cities', 'result'],
+    data(){
+      return {
+        i: 1000
+      }
+    },
+    methods:{
+      change(city) {
+        for (let c  of this.cities) {
+          if (city.name === c.name) {
+            c.name= 'hhhhh'
+          }
+        }
+      },
+      add(){
+        this.i = ++ this.i
+        this.cities.push({
+          name:'sh'+this.i, areaCode: '021'
+        })
+      },
+      changeResult(){
+        this.result=!this.result
+      }
+    }
+
+  })
+
+
+  let vm = new Vue({
+    el: '#app',
+    data(){
+      return {
+        list: [
+          {name:'sh', areaCode: '021'},
+          {name:'bj', areaCode: '010'},
+          {name:'hf', areaCode: '0551'}
+        ],
+        i:0,
+        result: true //这个是子改不的
+      }
+    },
+    methods:{
+      change(val) {
+        this.list= val
+        this.$forceUpdate()
+      },
+      add(){
+        this.i = ++ this.i
+        this.list.push({
+          name:'sh'+this.i, areaCode: '021'
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>
