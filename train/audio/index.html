@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .toolbar {
+      margin: 10px auto;
+      width: 1000px;
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      height: 40px;
+      align-items: center;
+    }
+
+    .tools {
+      color: #409eff;
+      cursor: pointer;
+    }
+
+    .play {
+      color: #409eff;
+    }
+
+    .progressBar {
+      position: relative;
+      width: 800px;
+      height: 10px;
+      margin: 0 auto;
+    }
+
+    .progressBar .progressBac {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 10px;
+      background: #e4e4e4;
+      border-radius: 8px;
+    }
+
+    .progressBar .speed {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0%;
+      height: 10px;
+      background: #f06060;
+      border-radius: 8px 0 0 8px;
+
+    }
+
+    .progressBar .drag {
+      position: absolute;
+      left: 0;
+      top: -5px;
+      width: 20px;
+      height: 20px;
+      background: skyblue;
+      opacity: 1;
+      border-radius: 50px;
+      box-shadow: #fff 0 0 5px;
+    }
+
+    audio {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <audio ref="audio"
+         :src="url"
+         :preload="audio.preload"
+         @play="onPlay"
+         @error="onError"
+         @waiting="onWaiting"
+         @pause="onPause"
+         @timeupdate="onTimeupdate"
+         @loadedmetadata="onLoadedmetadata"
+  ></audio>
+
+  <div class="toolbar">
+    <div class="tools">
+      <span class="play" @click="startPlayOrPause">{{audio.playing | transPlayPause}}</span>
+    </div>
+    <div class="progressBar">
+      <div class="progressBac"></div>
+      <div class="speed" :style="{width: percent + '%'}"></div>
+      <div class="drag" :style="{left: percent + '%'}"></div>
+    </div>
+    <div class="time">
+      <span>{{currentTime | formatSecond}}</span>/<span>{{duration | formatSecond}}</span>
+    </div>
+  </div>
+
+</div>
+<script type="module">
+  function realFormatSecond(second) {
+    var secondType = typeof second
+    if (secondType === 'number' || secondType === 'string') {
+      second = parseInt(second)
+      var hours = Math.floor(second / 3600)
+      second = second - hours * 3600
+      var mimute = Math.floor(second / 60)
+      second = second - mimute * 60
+      return hours + ':' + ('0' + mimute).slice(-2) + ':' + ('0' + second).slice(-2)
+    } else {
+      return '0:00:00'
+    }
+  }
+
+
+  let vm = new Vue({
+    el: '#app',
+    data() {
+      return {
+        url: './love.mp3',
+        audio: {
+          currentTime: 0,
+          maxTime: 0,
+          playing: false,
+          muted: false,
+          speed: 1,
+          waiting: true,
+          preload: 'auto'
+        },
+        percent: 0,
+        duration: 0,
+        currentTime: 0,
+
+        controlList: {
+          // 不显示下载
+          noDownload: false,
+          // 不显示静音
+          noMuted: false,
+          // 不显示音量条
+          noVolume: false,
+          // 不显示进度条
+          noProcess: false,
+          // 只能播放一个
+          onlyOnePlaying: false,
+          // 不要快进按钮
+          noSpeed: false
+        }
+      }
+    },
+    computed: {},
+    filters: {
+      formatSecond(second = 0) {
+        return realFormatSecond(second)
+      },
+      transPlayPause(value) {
+        console.log(value)
+        return value ? '暂停' : '播放'
+      }
+    },
+    methods: {
+      startPlayOrPause() {
+        return this.audio.playing ? this.pausePlay() : this.startPlay()
+      },
+      pausePlay() {
+
+        this.audio.playing = true
+      },
+      startPlay() {
+        this.audio.playing = false
+      },
+      // 开始播放
+      startPlay() {
+        this.$refs.audio.play()
+      },
+      // 暂停
+      pausePlay() {
+        this.$refs.audio.pause()
+      },
+      // 当音频暂停
+      onPause() {
+        this.audio.playing = false
+      },
+      // 当发生错误, 就出现loading状态
+      onError() {
+        this.audio.waiting = true
+      },
+      // 当音频开始等待
+      onWaiting(res) {
+        console.log(res)
+      },
+      // 当音频开始播放
+      onPlay(res) {
+        console.log(res)
+        this.audio.playing = true
+        this.audio.loading = false
+
+        if (!this.controlList.onlyOnePlaying) {
+          return
+        }
+
+        let target = res.target
+
+        let audios = document.getElementsByTagName('audio');
+
+        [...audios].forEach((item) => {
+          if (item !== target) {
+            item.pause()
+          }
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>
