@@ -44,7 +44,6 @@
       height: 10px;
       background: #e4e4e4;
       border-radius: 8px;
-      border: 1px solid red;
     }
 
     .speed {
@@ -53,28 +52,21 @@
       top: 0;
       width: 0%;
       height: 10px;
-      background: #f06060;
+      background: #91d5ff;
       border-radius: 8px 0 0 8px;
 
     }
-    .drag-wrap {
-      position: absolute;
-      left: 100%;
-      width: 40px;
-      height: 40px;
-      vertical-align: middle;
-      border: 1px solid red;
-    }
     .drag {
       position: absolute;
-      left: 0;
+      left: 100%;
       top: -5px;
-      width: 20px;
-      height: 20px;
-      background: skyblue;
-      opacity: 1;
-      border-radius: 50px;
-      box-shadow: #fff 0 0 5px;
+      margin-left: -8px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      border-radius: 50%;
+      border: solid 2px #91d5ff;
+      background-color: #fff;
     }
 
     audio {
@@ -98,14 +90,14 @@
 
   <div class="toolbar">
     <div class="tools">
-      <span class="play" @click="startPlayOrPause">{{audio.playing | transPlayPause}}</span>
+      <span v-if="audio.waiting">loading</span>
+      <span v-if="!audio.waiting" class="play" @click="startPlayOrPause">{{audio.playing | transPlayPause}}</span>
+      <span>快进</span>
     </div>
     <div class="progressBar">
-      <div class="progressBac">
-        <div class="drag" :title="audio.currentTime  | formatSecond" :style="{left: sliderTime + '%'}"></div>
-      </div>
+      <div class="progressBac"></div>
       <div class="speed" :style="{width: sliderTime + '%'}"></div>
-
+      <div class="drag" :title="audio.currentTime  | formatSecond" :style="{left: sliderTime + '%'}"></div>
     </div>
     <div class="time">
       <span>{{audio.currentTime | formatSecond}}</span>/<span>{{audio.maxTime | formatSecond}}</span>
@@ -128,7 +120,6 @@
     }
   }
 
-
   let vm = new Vue({
     el: '#app',
     data() {
@@ -146,7 +137,6 @@
         sliderTime: 0,
         volume: 100,
         speeds: 1,
-
         controlList: {
           noMuted: false,
           noVolume: false,
@@ -168,20 +158,15 @@
       startPlayOrPause() {
         return this.audio.playing ? this.pausePlay() : this.startPlay()
       },
-      pausePlay() {
-
-        this.audio.playing = true
-      },
-      startPlay() {
-        this.audio.playing = false
-      },
       // 开始播放
       startPlay() {
         this.$refs.audio.play()
+        this.audio.playing = false
       },
       // 暂停
       pausePlay() {
         this.$refs.audio.pause()
+        this.audio.playing = true
       },
       // 当音频暂停
       onPause() {
