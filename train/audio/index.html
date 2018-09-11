@@ -6,9 +6,13 @@
   <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
   <style>
     body {
-      margin:20px 0;
+      margin: 20px 0;
       padding: 0;
       user-select: none;
+    }
+
+    #app {
+      text-align: center
     }
 
     .toolbar {
@@ -23,7 +27,7 @@
       -border: 2px solid #eee;
       border-radius: 10px;
 
-      box-shadow:#dcdcdc 0 0 5px;
+      box-shadow: #dcdcdc 0 0 5px;
     }
 
     .tools {
@@ -31,7 +35,10 @@
       cursor: pointer;
     }
 
-    .tools span {margin-right: 5px}
+    .tools span {
+      margin-right: 5px
+    }
+
     .play {
       color: #409eff;
     }
@@ -81,6 +88,7 @@
       display: none;
     }
 
+
   </style>
 </head>
 <body>
@@ -118,7 +126,7 @@
       <span>{{audio.currentTime | formatSecond}}</span>/<span>{{audio.maxTime | formatSecond}}</span>
     </div>
   </div>
-
+  <canvas id="canvas"></canvas>
 </div>
 <script type="text/javascript">
   function realFormatSecond(second) {
@@ -134,6 +142,11 @@
       return '0:00:00'
     }
   }
+
+  let canvas = {}
+  let ctx = {}
+  const n = 300
+  let radius = n * 0.8 * 0.5  //半径
 
   let vm = new Vue({
     el: '#app',
@@ -153,7 +166,7 @@
         volume: 100,
         speeds: {
           value: 1,
-          options:[
+          options: [
             {text: `x1`, value: 1},
             {text: `x1.5`, value: 1.5},
             {text: `x2`, value: 2},
@@ -176,16 +189,16 @@
       }
     },
     methods: {
-      changeSpeed(value){
+      changeSpeed(value) {
         this.$refs.audio.playbackRate = value
       },
 
-      go(){
+      go() {
         this.$refs.audio.currentTime += 10
         this.startPlay()
       },
 
-      back(){
+      back() {
         this.$refs.audio.currentTime -= 10
         this.startPlay()
       },
@@ -256,10 +269,43 @@
       //播放时间改变
       onTimeupdate(res) {
         this.audio.currentTime = res.target.currentTime
-        this.sliderTime = (this.audio.currentTime / this.audio.maxTime) * 100.00
+        let t = this.audio.currentTime / this.audio.maxTime
+        this.sliderTime = t * 100.00
+        this.drawCircle(t)
+      },
+
+      drawCircle(percentage) {
+        // 使用html5 canvas绘制圆形或弧线
+        // http://www.365mini.com/page/html5-canvas-circle.htm
+
+        // 灰色背景
+        ctx.beginPath()
+        ctx.arc(0, 0, radius, 0, Math.PI * 2, false)  // Math.PI * 2 = 360度  弧度：0 0.5 1 1.5 2
+        ctx.lineWidth = 10
+        ctx.strokeStyle = "#eee"
+        ctx.stroke()
+
+        ctx.beginPath()
+        // ctx.arc(0, 0, radius, Math.PI * 3 / 2, (Math.PI * 3 / 2 + Math.PI * 2 / 180 + percentage * Math.PI * 2), false) // 12点钟方向
+        ctx.arc(0, 0, radius, 0, (0 + Math.PI * 2 / 180 + percentage * Math.PI * 2), false)
+        ctx.lineWidth = 10
+        ctx.strokeStyle = "#91d5ff"
+        ctx.lineCap = 'square' // round
+        ctx.stroke()
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
       }
+    },
+    mounted() {
+      canvas = this.$el.querySelector('#canvas')
+      canvas.width = n
+      canvas.height = n
+      ctx = canvas.getContext('2d')
+      ctx.translate(n / 2, n / 2)
+      this.drawCircle(0)
     }
   })
+
+
 </script>
 </body>
 </html>
