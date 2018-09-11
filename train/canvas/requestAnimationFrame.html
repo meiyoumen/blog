@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1000" height="600" style="border: 1px solid black"></canvas>
+<div>
+  window.requestAnimationFrame() 将告知浏览器你马上要开始动画效果了，后者需要在下次动画前调用相应方法来更新画面。
+  这个方法就是传递给window.requestAnimationFrame()的回调函数。
+
+  也可这个方法原理其实也就跟setTimeout/setInterval差不多，
+  通过递归调用同一方法来不断更新画面以达到动起来的效果，
+  但它优于setTimeout/setInterval的地方在于它是由浏览器专门为动画提供的API，在运行时浏览器会自动优化方法的调用，
+  并且如果页面不是激活状态下的话，动画会自动暂停，有效节省了CPU开销。
+
+  requestAnimationFrame(callback)//callback为回调函数
+
+  requestAnimationFrame
+  与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。
+  具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，
+  那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。
+  它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。
+</div>
+<script>
+  var canvas = document.getElementById('canvas')
+  var ctx = canvas.getContext('2d')
+  var raf
+
+  var ball = {
+    x: 100,
+    y: 100,
+    vx: 5,
+    vy: 2,
+    radius: 25,
+    color: `blue`,
+    draw() {
+      ctx.beginPath()
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
+      ctx.closePath()
+      ctx.fillStyle = this.color
+      ctx.fill()
+    }
+  }
+
+  // 长尾效果
+  let clear = () => {
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
+
+  let draw = () => {
+    clear()
+
+    ctx.fillStyle = 'rgba(255,255,255,0.3)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    ball.draw()
+
+    ball.x += ball.vx
+    ball.y += ball.vy
+
+
+    ball.vy *= .99;
+    ball.vy += .25;
+
+    // 边界
+    if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+      ball.vy = -ball.vy;
+    }
+    if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+      ball.vx = -ball.vx;
+    }
+
+    raf = window.requestAnimationFrame(draw)
+  }
+
+
+  canvas.addEventListener('mouseover', () => {
+    raf = window.requestAnimationFrame(draw)
+  })
+
+  canvas.addEventListener('mouseout', () => {
+    window.cancelAnimationFrame(raf)
+  })
+
+  ball.draw()
+
+
+
+</script>
+
+<script>
+  const animation = (timestamp) => console.log('animation called at', timestamp)
+
+  window.requestAnimationFrame(animation)
+  window.requestAnimationFrame(animation)
+  // animation called at 320.7559999991645
+  // animation called at 320.7559999991645
+
+
+  // https://github.com/weiying-shenzhen/raf-plus/blob/master/src/index.js
+  let scheduledAnimationFrame = false
+  const onScroll = e => {
+    if (scheduledAnimationFrame) { return }
+
+    scheduledAnimationFrame = true
+    window.requestAnimationFrame(timestamp => {
+      scheduledAnimationFrame = false
+      animation(timestamp)
+    })
+  }
+  window.addEventListener('scroll', onScroll)
+</script>
+</body>
+</html>
