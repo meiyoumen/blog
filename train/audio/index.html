@@ -5,19 +5,25 @@
   <title>Title</title>
   <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
   <style>
-    * {
-      margin: 0;
+    body {
+      margin:20px 0;
       padding: 0;
+      user-select: none;
     }
 
     .toolbar {
       margin: 10px auto;
+      padding: 0 20px;
       width: 1000px;
       display: flex;
       flex: 1;
       flex-direction: row;
       height: 40px;
       align-items: center;
+      -border: 2px solid #eee;
+      border-radius: 10px;
+
+      box-shadow:#dcdcdc 0 0 5px;
     }
 
     .tools {
@@ -25,13 +31,14 @@
       cursor: pointer;
     }
 
+    .tools span {margin-right: 5px}
     .play {
       color: #409eff;
     }
 
     .progressBar {
       position: relative;
-      width: 800px;
+      width: 600px;
       height: 10px;
       margin: 0 auto;
     }
@@ -56,6 +63,7 @@
       border-radius: 8px 0 0 8px;
 
     }
+
     .drag {
       position: absolute;
       left: 100%;
@@ -84,15 +92,22 @@
          @error="onError"
          @waiting="onWaiting"
          @pause="onPause"
-         @timeupdate="onTimeupdate"
+         @loadstart="onLoadStart"
+         @durationchange="onDurationchange"
          @loadedmetadata="onLoadedmetadata"
+         @loadeddata="onLoadeddata"
+         @timeupdate="onTimeupdate"
   ></audio>
 
   <div class="toolbar">
     <div class="tools">
       <span v-if="audio.waiting">loading</span>
       <span v-if="!audio.waiting" class="play" @click="startPlayOrPause">{{audio.playing | transPlayPause}}</span>
-      <span>快进</span>
+      <span @click="go">快进</span>
+      <span @click="back">快退</span>
+      <select v-model="speeds.value" @change="changeSpeed(speeds.value)">
+        <option v-for="o in speeds.options" :value="o.value">{{ o.text }}</option>
+      </select>
     </div>
     <div class="progressBar">
       <div class="progressBac"></div>
@@ -136,7 +151,14 @@
         },
         sliderTime: 0,
         volume: 100,
-        speeds: 1,
+        speeds: {
+          value: 1,
+          options:[
+            {text: `x1`, value: 1},
+            {text: `x1.5`, value: 1.5},
+            {text: `x2`, value: 2},
+          ]
+        },
         controlList: {
           noMuted: false,
           noVolume: false,
@@ -145,7 +167,6 @@
         }
       }
     },
-    computed: {},
     filters: {
       formatSecond(second = 0) {
         return realFormatSecond(second)
@@ -155,6 +176,20 @@
       }
     },
     methods: {
+      changeSpeed(value){
+        this.$refs.audio.playbackRate = value
+      },
+
+      go(){
+        this.$refs.audio.currentTime += 10
+        this.startPlay()
+      },
+
+      back(){
+        this.$refs.audio.currentTime -= 10
+        this.startPlay()
+      },
+
       startPlayOrPause() {
         return this.audio.playing ? this.pausePlay() : this.startPlay()
       },
@@ -189,25 +224,39 @@
       },
 
       /*
-         loadstart
-         durationchange
-         loadedmetadata
-         loadeddata
-         progress
-         canplay
-         canplaythrough
-    */
+        1. loadstart：开始加载音频和视频。
+        2. durationchange：音频和视频的duration属性（时长）发生变化时触发，即已经知道媒体文件的长度。如果没有指定音频和视频文件，duration属性等于NaN。如果播放流媒体文件，没有明确的结束时间，duration属性等于Inf（Infinity）。
+        3. loadedmetadata：媒体文件的元数据加载完毕时触发，元数据包括duration（时长）、dimensions（大小，视频独有）和文字轨。
+        4. loadeddata：媒体文件的第一帧加载完毕时触发，此时整个文件还没有加载完。
+        5. progress：浏览器正在下载媒体文件，周期性触发。下载信息保存在元素的buffered属性中。
+        6. canplay：浏览器准备好播放，即使只有几帧，readyState属性变为CAN_PLAY。
+        7. canplaythrough：浏览器认为可以不缓冲（buffering）播放时触发，即当前下载速度保持不低于播放速度，readyState属性变为CAN_PLAY_THROUGH。
+      */
+      //客户端开始请求数据
+      onLoadStart(e) {
+        console.log(1, e)
+      },
 
+      //资源长度改变
+      onDurationchange(e) {
+        console.log(2, e)
+      },
+
+      //成功获取资源长度
+      onLoadedmetadata(e) {
+        console.log(3, e)
+        this.audio.waiting = false
+        this.audio.maxTime = e.target.duration
+      },
+
+      onLoadeddata(e) {
+        console.log(4, e)
+      },
+
+      //播放时间改变
       onTimeupdate(res) {
         this.audio.currentTime = res.target.currentTime
         this.sliderTime = (this.audio.currentTime / this.audio.maxTime) * 100.00
-      },
-
-      onLoadedmetadata(res) {
-        console.log('loadedmetadata')
-        console.log(res)
-        this.audio.waiting = false
-        this.audio.maxTime = res.target.duration
       }
     }
   })
