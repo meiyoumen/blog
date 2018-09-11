@@ -147,7 +147,7 @@
   let ctx = {}
   const n = 300
   let radius = n * 0.8 * 0.5  //半径
-  let mp3 = 'http://101.227.216.159/amobile.music.tc.qq.com/C400001KxARP2Ij3hH.m4a?guid=2447050023&vkey=62F811BD6004CA8F0A8BCC9F5B15B369CAFB7354D228BEBF0D9EE1899022D9A6EC7583AB4561162A8016DB02A7663332FBD3C3857F196DBA&uin=178&fromtag=66'
+let mp3 = 'http://101.227.216.159/amobile.music.tc.qq.com/C400001KxARP2Ij3hH.m4a?guid=2447050023&vkey=62F811BD6004CA8F0A8BCC9F5B15B369CAFB7354D228BEBF0D9EE1899022D9A6EC7583AB4561162A8016DB02A7663332FBD3C3857F196DBA&uin=178&fromtag=66'
   let vm = new Vue({
     el: '#app',
     data() {
@@ -196,11 +196,13 @@
       go() {
         this.$refs.audio.currentTime += 10
         this.startPlay()
+        this.audio.playing = true
       },
 
       back() {
         this.$refs.audio.currentTime -= 10
         this.startPlay()
+        this.audio.playing = true
       },
 
       startPlayOrPause() {
