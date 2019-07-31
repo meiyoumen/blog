@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
 </head>
 <body>
 <div id="app">
@@ -36,6 +36,7 @@
 
 
       Vue.mixin({
+        proxy: {},
         // 添加到mixin中的任何内容将被注入到所有组件中。
         //在这个例子中， mounted() 方法将在组件被挂载到DOM后调用
         mounted() {
@@ -57,7 +58,6 @@
 
   // 调用方法2 显式调用插件
   Vue.use(AlertUtil)
-
   let vm = new Vue({
     el: '#app',
     data: {

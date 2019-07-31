@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		li {
+			float: left;
+			margin-right: 50px;
+		}
+
+		div {
+			display: none;
+			clear: both
+		}
+	</style>
+</head>
+<body>
+<ul>
+	<li><a data-hash="index">首页</a></li>
+	<li><a data-hash="teacher">老师</a></li>
+	<li><a data-hash="message">留言</a></li>
+</ul>
+<div data-hash="index">首页的内容</div>
+<div data-hash="teacher">老师的内容</div>
+<div data-hash="message">留言的内容</div>
+<script type="text/javascript">
+  let oA = document.getElementsByTagName('a')
+  let oDiv = document.getElementsByTagName('div')
+
+  for (let i = 0; i < oA.length; i++) {
+    oA[i].onclick = function () {
+      let hash = this.dataset.hash
+      window.location.hash = hash
+
+      for (let j = 0; j < oDiv.length; j++) {
+        oDiv[j].style.display = "none"
+        if (hash == oDiv[j].dataset.hash) {
+          oDiv[j].style.display = "block"
+        }
+      }
+    }
+  }
+
+
+  window.onhashchange = function () {
+  //  window.location.reload()
+  }
+  //页面刷新时
+  let fisrtHash = window.location.hash.substring(1) || 'index'
+  for (let i = 0; i < oDiv.length; i++) {
+    if (fisrtHash == oDiv[i].dataset.hash) {
+      oDiv[i].style.display = "block"
+    }
+  }
+
+  window.addEventListener('hashchange', event => {
+    console.log(event.newURL, event.oldURL)
+  })
+</script>
+</body>
+</html>

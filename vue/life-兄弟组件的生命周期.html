@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <button type="button" @click="change">{{flag?'开':'关'}}</button>
+  <button type="button" @click="changeProps">改变子组件props</button>
+  <button type="button" @click="handleDestroy">销毁</button>
+  <div class="complex">
+    <h3>复杂组件</h3>
+    <lifecycle-single :comp-name="myName"></lifecycle-single>
+  </div>
+</div>
+
+<script type="text/javascript">
+  //开关组件代码
+  Vue.component("LifecycleSingle", {
+    template: `<div><button type='button' @click='change'>{{result?'开':'关'}}</button> <div>{{compName}}</div>
+  <button type="button" @click="handleDestroy">销毁</button>
+</div>`,
+    props: {
+      compName: {
+        type: String,
+        default: 'single'
+      }
+    },
+    data () {
+      return {
+        result: false
+      }
+    },
+    methods: {
+      change () {
+        this.result = !this.result
+      },
+      handleDestroy (){
+        this.$destroy()
+      }
+    },
+    beforeCreate() {
+      // this.compName = 'single'
+      // console.log(`--${this.compName}--beforeCreate`)
+      console.log(` --data未初始化--beforeCreate`)
+    },
+    created(){
+      console.log('-- child created')
+    },
+    mounted() {
+      console.log('-- child mounted')
+    },
+    beforeUpdate() {
+      console.log(`---- child--beforeUpdate`)
+    },
+    updated() {
+      console.log(`---- child--updated`)
+    },
+    beforeDestroy() {
+      console.log(`---- child--beforeDestroy`)
+    },
+    destroyed() {
+      console.log(`---- child--destroyed`)
+    }
+  })
+
+  const  COMPONENT_NAME = 'complex'
+
+  new Vue({
+    el: '#app',
+    data: {
+      flag: false,
+      myName: 'hello'
+    },
+    methods: {
+      change () {
+        this.flag = !this.flag
+      },
+      changeProps() {
+        this.myName = 'world' + Math.random()
+      },
+      handleDestroy (){
+        this.$destroy()
+      }
+    },
+    beforeCreate() {
+      console.log(`--${COMPONENT_NAME}--beforeCreate`)
+    },
+    created() {
+      console.log(`--${COMPONENT_NAME}--created`)
+    },
+    beforeMount() {
+      console.log(`--${COMPONENT_NAME}--beforeMount`)
+    },
+    mounted() {
+      console.log(`--${COMPONENT_NAME}--mounted`)
+    },
+    beforeUpdate() {
+      console.log(`--${COMPONENT_NAME}--beforeUpdate`)
+    },
+    updated() {
+      console.log(`--${COMPONENT_NAME}--updated`)
+    },
+    beforeDestroy() {
+      console.log(`--${COMPONENT_NAME}--beforeDestroy`)
+    },
+    destroyed() {
+      console.log(`--${COMPONENT_NAME}--destroyed`)
+    }
+  })
+  /**
+   从打印结果可以看出:
+
+   仅当子组件完成挂载后，父组件才会挂载
+   当子组件完成挂载后，父组件会主动执行一次beforeUpdate/updated钩子函数（仅首次）
+   父子组件在data变化中是分别监控的，但是在更新props中的数据是关联的（可实践）
+   销毁父组件时，先将子组件销毁后才会销毁父组件
+   */
+</script>
+</body>
+</html>

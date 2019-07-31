@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <button type="button" @click="change">{{flag?'开':'关'}}</button>
+  <button type="button" @click="changeProps">改变子组件props</button>
+  <button type="button" @click="handleDestroy">销毁</button>
+  <div style="font-size: 12px;border: 1px solid #ddd;padding: 10px;color: #666">
+    mixin中的生命周期与引入该组件的生命周期是仅仅关联的，<span style="color: red">且mixin的生命周期优先执行</span>
+    <div>
+      --lifecycleMixin--beforeCreate <br>
+      --complex--beforeCreate<br><br>
+
+      --lifecycleMixin--created<br>
+      --complex--created<br><br>
+
+      --lifecycleMixin--beforeMount<br>
+      --complex--beforeMount<br><br>
+
+      --lifecycleMixin--mounted<br>
+      --complex--mounted<br><br>
+
+      --lifecycleMixin--beforeDestroy<br>
+      --complex--beforeDestroy<br><br>
+
+      --lifecycleMixin--destroyed<br>
+      --complex--destroyed
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  const COMPONENT_NAME = 'lifecycleMixin'
+  let lifecycleMixin = {
+    name: COMPONENT_NAME,
+    beforeCreate() {
+      console.log(`--${COMPONENT_NAME}--beforeCreate`)
+    },
+    created() {
+      console.log(`--${COMPONENT_NAME}--created`)
+    },
+    beforeMount() {
+      console.log(`--${COMPONENT_NAME}--beforeMount`)
+    },
+    mounted() {
+      console.log(`--${COMPONENT_NAME}--mounted`)
+    },
+    beforeUpdate() {
+      console.log(`--${COMPONENT_NAME}--beforeUpdate`)
+    },
+    updated() {
+      console.log(`--${COMPONENT_NAME}--updated`)
+    },
+    beforeDestroy() {
+      console.log(`--${COMPONENT_NAME}--beforeDestroy`)
+    },
+    destroyed() {
+      console.log(`--${COMPONENT_NAME}--destroyed`)
+    }
+  }
+
+  const  COMPONENT_NAME2 = 'complex'
+  new Vue({
+    mixins: [lifecycleMixin],
+    el: '#app',
+    data: {
+      flag: false,
+      myName: 'hello'
+    },
+    methods: {
+      change () {
+        this.flag = !this.flag
+      },
+      changeProps() {
+        this.myName = 'world' + Math.random()
+      },
+      handleDestroy (){
+        this.$destroy()
+      }
+    },
+    beforeCreate() {
+      console.log(`--${COMPONENT_NAME2}--beforeCreate`)
+    },
+    created() {
+      console.log(`--${COMPONENT_NAME2}--created`)
+    },
+    beforeMount() {
+      console.log(`--${COMPONENT_NAME2}--beforeMount`)
+    },
+    mounted() {
+      console.log(`--${COMPONENT_NAME2}--mounted`)
+    },
+    beforeUpdate() {
+      console.log(`--${COMPONENT_NAME2}--beforeUpdate`)
+    },
+    updated() {
+      console.log(`--${COMPONENT_NAME2}--updated`)
+    },
+    beforeDestroy() {
+      console.log(`--${COMPONENT_NAME2}--beforeDestroy`)
+    },
+    destroyed() {
+      console.log(`--${COMPONENT_NAME2}--destroyed`)
+    }
+  })
+</script>
+</body>
+</html>

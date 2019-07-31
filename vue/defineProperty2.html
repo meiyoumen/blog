@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>vuex</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+  <style>
+    body{background:#fff}
+    .box{}
+    .box p{margin-right:10px;float:left;background:#ddd;padding:5px;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <div>
+    <ul>
+      <li v-for="(it, index) in list">{{it}}</li>
+    </ul>
+
+    <button @click="change">btn</button>
+    <button @click="change2">btn2</button>
+</div>
+
+</div>
+<script>
+  /**
+   * 如果通过下标方式修改数组数据或者给对象新增属性并不会触发组件的重新渲染，
+   * 因为 Object.defineProperty 不能拦截到这些操作，更精确的来说，对于数组而言，大部分操作都是拦截不到的，
+   * 只是 Vue 内部通过重写函数的方式解决了这个问题。
+   * @type {boolean}
+   */
+  Vue.config.devtools = true
+  var app = new Vue({
+    el: '#app',
+    data () {
+      return {
+        list: ['A', 'B', 'C']
+      }
+    },
+    methods : {
+      change(){
+        this.list.push('Hlello')
+      },
+      change2(){
+       // this.list[1] = 'bbbb'   //不是响应式
+        this.$set(this.list, 1, 'bbbb')
+      }
+    }
+  })
+</script>
+</body>
+</html>

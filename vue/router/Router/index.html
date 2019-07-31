@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <div class="home"><a href="#/">主页</a></div>
+  <ul class="list">
+    <li><a href="#/about">about</a></li>
+    <li><a href="#/article/111">article 1111111111</a></li>
+    <li><a href="#/article/222">article 2222222222</a></li>
+    <li><a href="#/article/333">article 3333333333</a></li>
+  </ul>
+  <div id="container" class="container">
+  </div>
+</div>
+<script type="module">
+  import VueRouter from './index.js'
+  new VueRouter({
+    el: '#container',
+    routes: [
+      {
+        url: '/',
+        render: function (callback) {
+          callback(null, '<button>home</button>')
+        },
+        bind: function () {
+          console.log(this)
+        }
+      },
+      {
+        url: '/about',
+        render: function (callback) {
+          callback(null, '<button>about</button>');
+        },
+        bind: function () {
+          console.log(this)
+        }
+      },
+      {
+        url: '/article/:id',
+        render: function () {
+          console.log('render: ', this) // Object {url: "/article/:id", className: "", params: {id:111}}
+          let id = this.params.id
+          console.log('ID:', id)
+          return new Promise(function (resolve, reject){
+            resolve(`<button>hello ${id}<button`);
+          })
+        },
+        bind: function () {
+          console.log('bind: ', this)
+        }
+      }
+    ]
+  })
+</script>
+</body>
+</html>

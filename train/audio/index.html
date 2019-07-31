@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
   <style>
     body {
       margin: 20px 0;
@@ -149,7 +149,7 @@
     el: '#app',
     data() {
       return {
-        url: mp3 || './love.mp3',
+        url: 0 || './love.mp3',
         audio: {
           currentTime: 0,
           maxTime: 0,
@@ -192,14 +192,14 @@
 
       go() {
         this.$refs.audio.currentTime += 10
-        this.startPlay()
-        this.audio.playing = true
+       // this.startPlay()
+     //   this.audio.playing = true
       },
 
       back() {
         this.$refs.audio.currentTime -= 10
-        this.startPlay()
-        this.audio.playing = true
+       // this.startPlay()
+       // this.audio.playing = true
       },
 
       startPlayOrPause() {

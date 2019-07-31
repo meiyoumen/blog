@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="css/font-awesome.css">
+  <link rel="stylesheet" href="css/test38.css">
+  <script type="text/javascript" src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <date-range-picker
+    :from_date_prop="from_date"
+    :to_date_prop="to_date"
+    @pick-from-date="pickFromDate"
+    @pick-to-date="pickToDate"
+  ></date-range-picker>
+  <date-picker
+    :date_prop="createDate"
+    @pick-date="pickDate"
+  ></date-picker>
+</div>
+<!-- 日期控件 begin -->
+<template id="datePicker_tmp">
+  <div class="datePickerBox">
+    <div class="header"
+         @click="showPanel=!showPanel;"
+    >
+      <p class="val"><%dateStr|placehFilter(placeHolder)%></p>
+      <i class="icon-calendar icon-large"></i>
+    </div>
+    <date-panel
+      v-show="showPanel"
+      @pick-date="pickDateFn"
+      @switch-panel="switchPanelFn"
+      :date="dateStr"
+    ></date-panel>
+  </div>
+</template>
+<!-- 日期控件 end -->
+
+<!-- 日期面板控件 begin -->
+<template id="datePanel_tmp">
+  <div class="datePanel">
+    <div class="opr">
+      <a href="javascript:;" class="icon-double-angle-left icon-large" @click="adjustYear(-1)"></a>
+      <a href="javascript:;" class="icon-angle-left icon-large" @click="adjustMonth(-1)"></a>
+      <span @click="selectYear"><%tmpYear%></span>
+      <span @click="selectMonth"><%tmpMonth|monthFilter%></span>
+      <a href="javascript:;" class="icon-angle-right icon-large" @click="adjustMonth(1)"></a>
+      <a href="javascript:;" class="icon-double-angle-right icon-large" @click="adjustYear(1)"></a>
+    </div>
+    <div class="tabCont">
+      <div class="pickerDate" v-show="showPickDate">
+        <ul class="midHeader">
+          <li>日</li><li>一</li><li>二</li><li>三</li><li>四</li><li>五</li><li>六</li>
+        </ul>
+        <ul class="midCont">
+          <li v-for="(item,index) in dateListShow" @click="pickDate(item.year,item.month,item.day)" :class="dateClass(item)"><%item.day%></li>
+        </ul>
+        <div class="btnBox">
+          <input type="button" value="清空" @click="clearDate"/>
+          <input type="button" value="今天" @click="pickToday"/>
+          <input type="button" value="确认" @click="switchPanel(false)"/>
+        </div>
+      </div>
+      <div class="pickerYear" v-show="showPickYear">
+        <ul class="yearList">
+          <li v-for="(item,index) in yearList" :class="{cur:item==tmpYear}" @click="pickYear(item)"><%item%></li>
+        </ul>
+        <div class="yearBtnBox">
+          <a href="javascript:;" class="icon-arrow-left icon-large" @click="changeYearRange(-1)"></a>
+          <a href="javascript:;" class="icon-remove icon-large" @click="closeSelectYear"></a>
+          <a href="javascript:;" class="icon-arrow-right icon-large" @click="changeYearRange(1)"></a>
+        </div>
+      </div>
+      <div class="pickerMonth" v-show="showPickMonth">
+        <ul class="monthList">
+          <li v-for="(item,index) in 12" :class="{cur:tmpMonth==item}" @click="pickMonth(item)"><%item|monthFilter%></li>
+        </ul>
+        <div class="monthBtnBox">
+          <a href="javascript:;" class="icon-remove icon-2x" @click="closeSelectMonth"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<!-- 日期面板控件 end -->
+
+<!-- 时间范围控件 begin -->
+<template id="dateRangePicker_tmp">
+  <div class="dateRangeBox">
+    <div class="rangeHeader"
+         @click="showPanel=!showPanel;"
+    >
+      <p class="val"><% dateStr %></p>
+      <i class="icon-calendar icon-large"></i>
+    </div>
+    <div class="rangePanel" v-show="showPanel" :style="rangePanelStyle()">
+      <div class="leftOpr">
+        <ul class="rangeUl">
+          <li @click="pickRange('today')">今天</li>
+          <li @click="pickRange('yestoday')">昨天</li>
+          <li @click="pickRange('pre7')">过去7天</li>
+          <li @click="pickRange('pre30')">过去30天</li>
+          <li @click="pickRange('month')">本月</li>
+          <li @click="pickRange('lastMonth')">上个月</li>
+        </ul>
+        <div class="btnBox">
+          <input type="button" value="确认" @click="submitBtn"/>
+          <input type="button" value="清空" @click="clearDate"/>
+        </div>
+      </div>
+      <div class="rightOpr">
+        <div class="rangeItem">
+          <div class="eachHeader">
+            <i class="icon-calendar"></i>
+            <p class="text" :class="{'hasVal':!/^\s*$/.test(from_date)}"><%from_date|showPh('开始时间')%></p>
+          </div>
+          <date-panel
+            @pick-date="pickDateFrom"
+            :date="from_date"
+          ></date-panel>
+        </div>
+        <div class="rangeItem">
+          <div class="eachHeader">
+            <i class="icon-calendar"></i>
+            <p class="text" :class="{'hasVal':!/^\s*$/.test(to_date)}"><%to_date|showPh('结束时间')%></p>
+          </div>
+          <date-panel
+            @pick-date="pickDateTo"
+            :date="to_date"
+            ref="to_panel"
+          ></date-panel>
+        </div>
+        <div class="pickTip">
+          <i class="icon-bell"></i>
+          <p class="text"><%tipInfor%></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<!-- 时间范围控件 end -->
+</body>
+</html>
+<script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+<script type="text/javascript" src="js/test38.js"></script>

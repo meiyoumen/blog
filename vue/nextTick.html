@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>vuex</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+  <style>
+    body{background:#fff}
+    .box{}
+    .box p{margin-right:10px;float:left;background:#ddd;padding:5px;}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div ref="msgDiv">{{msg}}</div>
+  <div v-if="msg1">Message got outside $nextTick: {{msg1}}</div>
+  <div v-if="msg2">Message got inside $nextTick: {{msg2}}</div>
+  <div v-if="msg3">Message got outside $nextTick: {{msg3}}</div>
+  <button @click="changeMsg">
+    Change the Message
+  </button>
+</div>
+
+</div>
+<script>
+  /**
+   * https://www.jianshu.com/p/a7550c0e164f
+   * 从图中可以得知：msg1和msg3显示的内容还是变换之前的，而msg2显示的内容是变换之后的。其根本原因是因为Vue中DOM更新是异步的（详细解释在后面）。
+   */
+  Vue.config.devtools = true
+  var app = new Vue({
+    el: '.app',
+    data: {
+      msg: 'Hello Vue.',
+      msg1: '',
+      msg2: '',
+      msg3: ''
+    },
+    methods: {
+      changeMsg() {
+        this.msg = "Hello world."
+        this.msg1 = this.$refs.msgDiv.innerHTML   // 未更新 Hello Vue
+        // $nextTick 异涉方法
+        this.$nextTick(() => {
+          this.msg2 = this.$refs.msgDiv.innerHTML // 已更新 Hello world
+        })
+        this.msg3 = this.$refs.msgDiv.innerHTML // 未更新 Hello Vue
+      }
+    }
+  })
+</script>
+</body>
+</html>

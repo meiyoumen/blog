@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<dl>
+  <style>.sk-lesson-knowledge {
+    bottom: 0;
+  }
+
+  .sk-teach-content.quizContent {
+    min-height: 100%
+  }
+
+  .quizContent tr, td {
+    margin: 0px !important;
+    padding: 3px !important;
+  }
+
+  .quizContent * {
+    font-family: 'ProximaNova-Regular', 'MicrosoftYaHei', 'proximanova', 'Microsoft YaHei', 'SimHei', '黑体';
+    margin: 0px;
+    padding: 0px;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 24px !important;
+    font-weight: normal !important;
+    -webkit-box-sizing: border-box;
+    word-wrap: normal;
+    list-style-type: upper-alpha;
+    list-style-position: inside;
+  }
+
+  .quizContent img, table {
+    max-width: 708px;
+    border-spacing: 0 !important;
+    vertical-align: middle;
+  }
+
+  f {
+    display: inline-flex;
+    white-space: nowrap;
+    text-indent: 0px;
+    overflow: visible;
+    text-align: left;
+  }
+
+  .quizContent li > p:first-child {
+    display: inline !important;
+  }
+
+  .quizContent .MathJye * {
+    line-height: 18px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+
+  .quizContent .MathJye f {
+    display: inline-block;
+    white-space: nowrap;
+    text-indent: 0px;
+    overflow: visible;
+    text-align: left;
+  }
+
+  .quizContent sub *, sup * {
+    font-size: 12px !important;
+  }
+
+  .quizContent .MathJye span[style*="vertical-align:super"] * {
+    font-size: 12px;
+  }
+
+  .quizContent .MathJye span[style*="vertical-align:sub"] * {
+    font-size: 12px;
+  }
+
+  .question-box dl dd {
+    margin-bottom: 0px;
+  }
+
+  .question-box dl dt {
+    margin-bottom: 0px;
+  }
+
+  .quizContent .MathJye table {
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    line-height: 24px;
+    _font-size: 100%;
+    font-style: normal;
+    font-weight: normal;
+    border: 0;
+    float: none;
+    display: inline-block;
+    zoom: 0;
+  }
+
+  #q_answer {
+    display: none;
+  }
+
+  table.edittable {
+    border-collapse: collapse;
+    text-align: center;
+    margin: 2px
+  }
+
+  table.edittable td, table.edittable th {
+    line-height: 30px;
+    padding: 5px;
+    white-space: normal;
+    word-break: break-all;
+    border: 1px solid #000;
+    vertical-align: middle
+  }
+
+  table.composition {
+    border-collapse: collapse;
+    text-align: left;
+    margin: 2px;
+    width: 98%
+  }
+
+  table.composition td, table.composition th {
+    line-height: 30px;
+    white-space: normal;
+    word-break: break-all;
+    border-width: 0;
+    vertical-align: middle
+  }
+
+  table.composition2 {
+    border-collapse: collapse;
+    width: auto
+  }
+
+  table.composition2 td, table.composition2 th {
+    text-align: left;
+    line-height: 30px;
+    white-space: normal;
+    word-break: break-all;
+    border: none;
+    border-width: 0;
+    vertical-align: middle
+  }
+
+  .talqs, .talqs * {
+    box-sizing: border-box;
+  }
+
+  .talqs {
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 2.3em;
+  }
+
+  .talqs pinyin {
+    display: inline-block;
+    padding: 0 3px;
+    text-indent: 0;
+    line-height: 1.6;
+  }
+
+  .talqs pinyin span {
+    display: block;
+    text-align: center;
+  }
+
+  .talqs .clearfix:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+
+  .talqs p {
+    margin: 0;
+  }
+
+  .talqs label {
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+
+  .talqs img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .talqs .talqs_index {
+    float: left;
+    margin-right: 10px;
+  }
+
+  .talqs .talqs_source {
+    float: left;
+    padding-right: 10px;
+    font-weight: 700;
+  }
+
+  .talqs .talqs_difficulty {
+    color: #ff9500;
+    float: left;
+  }
+
+  .talqs > .talqs_main > .talqs_content {
+    clear: both;
+  }
+
+  .talqs > .talqs_main > .talqs_index + .talqs_content {
+    clear: none;
+  }
+
+  .talqs .talqs_content, .talqs .talqs_panel, .talqs .talqs_tree {
+    overflow: auto;
+  }
+
+  .talqs .talqs_content:after, .talqs .talqs_panel:after, .talqs .talqs_tree:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+
+  .talqs .talqs_content img[style*="float:left"], .talqs .talqs_content img[style*="float: left"] {
+    margin-right: 10px;
+  }
+
+  .talqs .talqs_content img[style*="float:right"], .talqs .talqs_content img[style*="float: right"] {
+    margin-left: 10px;
+  }
+
+  .talqs .talqs_options {
+    clear: both;
+  }
+
+  .talqs .talqs_options ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .talqs .talqs_options .talqs_options_label {
+    float: left;
+    padding-right: 5px;
+  }
+
+  .talqs .talqs_options .talqs_options_content {
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+
+  .talqs .talqs_options .talqs_options_content p {
+    margin: 0;
+  }
+
+  .talqs .talqs_options .talqs_options_list_2 .talqs_options_rows {
+    width: 50%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_list_2 .talqs_options_rows:nth-child(2n + 3) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_columns_2 .talqs_options_columns_item {
+    width: 50%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_columns_2 .talqs_options_columns_item:nth-child(2n + 3) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_list_3 .talqs_options_rows {
+    width: 33.33333333%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_list_3 .talqs_options_rows:nth-child(3n + 4) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_columns_3 .talqs_options_columns_item {
+    width: 33.33333333%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_columns_3 .talqs_options_columns_item:nth-child(3n + 4) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_list_4 .talqs_options_rows {
+    width: 25%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_list_4 .talqs_options_rows:nth-child(4n + 5) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_columns_4 .talqs_options_columns_item {
+    width: 25%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_columns_4 .talqs_options_columns_item:nth-child(4n + 5) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_list_5 .talqs_options_rows {
+    width: 20%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_list_5 .talqs_options_rows:nth-child(5n + 6) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_list_6 .talqs_options_rows {
+    width: 16.66666667%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_list_6 .talqs_options_rows:nth-child(6n + 7) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_list_7 .talqs_options_rows {
+    width: 14.28571429%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_list_7 .talqs_options_rows:nth-child(7n + 8) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_list_8 .talqs_options_rows {
+    width: 12.5%;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_list_8 .talqs_options_rows:nth-child(8n + 9) {
+    clear: both;
+  }
+
+  .talqs .talqs_options .talqs_options_index {
+    width: 20px;
+    float: left;
+  }
+
+  .talqs .talqs_options .talqs_options_index + .talqs_options_columns_4 {
+    margin-left: 20px;
+  }
+
+  @media (max-width: 576px) {
+    .talqs .talqs_options .talqs_options_index + .talqs_options_columns_4 .talqs_options_columns_item {
+      width: 50%;
+    }
+  }
+
+  .talqs .vertical-divisor-out {
+    float: left;
+    height: 22px;
+    display: inline-block;
+    margin-top: 34px;
+    position: relative;
+  }
+
+  .talqs .vertical-divisor-out span {
+    width: 22px;
+    height: 22px;
+    line-height: 24px;
+    text-align: center;
+    display: inline-block;
+    border: none;
+  }
+
+  .talqs .vertical-divisor-out .needFill {
+    border: 1px solid;
+  }
+
+  .talqs .vertical-divisor-out .vertical-rmrbzbs {
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='11' height='44' viewBox='0 0 11 44'><g fill='none'><g stroke='#000'><path d='M1 0C6.8 7.4 9.7 15.2 9.7 23.4 9.7 31.6 7.1 38.5 2 44'/></g></g></svg>") no-repeat;
+    width: 11px;
+    height: 42px;
+    position: absolute;
+    top: -1px;
+  }
+
+  .talqs .vertical-table {
+    border: none;
+  }
+
+  .talqs .vertical-table tr {
+    padding: 5px 0;
+    display: flex;
+  }
+
+  .talqs .vertical-table td {
+    border: none;
+    width: 24px;
+    height: 24px;
+    line-height: 22px;
+    text-align: center;
+    margin: 0 5px;
+  }
+
+  .talqs .vertical-table .needFill {
+    border: 1px solid;
+  }
+
+  .talqs .vertical-table .need-border {
+    border-bottom: 1px solid;
+  }
+
+  .talqs .vertical-division tr {
+    padding: 5px 0 5px 15px;
+  }
+
+  .talqs .talqs_analyze_single {
+    margin-top: 10px;
+    padding: 10px 0;
+    background-color: #fafff5;
+    border: 1px solid #d6d6d6;
+  }
+
+  .talqs .talqs_analyze_single .talqs_answer, .talqs .talqs_analyze_single .talqs_analyze, .talqs .talqs_analyze_single .talqs_knowledge_point, .talqs .talqs_analyze_single .talqs_id {
+    margin-bottom: 10px;
+  }
+
+  .talqs .talqs_analyze_single .talqs_answer:last-child, .talqs .talqs_analyze_single .talqs_analyze:last-child, .talqs .talqs_analyze_single .talqs_knowledge_point:last-child, .talqs .talqs_analyze_single .talqs_id:last-child {
+    margin-bottom: 0;
+  }
+
+  .talqs .talqs_analyze_single .talqs_label {
+    background-color: #98bf6b;
+    color: #fff;
+    min-width: 3em;
+    padding: 0 2px;
+    text-align: center;
+    float: left;
+  }
+
+  .talqs .talqs_analyze_single .talqs_panel {
+    margin-left: calc(3em + 10px);
+    word-wrap: break-word;
+    padding-right: 10px;
+  }
+
+  .talqs .talqs_analyze_single .talqs_analyze .talqs_panel_item .talqs_panel_item_index {
+    float: left;
+  }
+
+  .talqs .talqs_analyze_single .talqs_analyze .talqs_panel_item .talqs_panel_item_index + .talqs_panel_item_content {
+    margin-left: 1em;
+  }
+
+  .talqs > .talqs_main > .talqs_subqs > .talqs_main > .talqs_index {
+    margin-right: 0;
+    margin-left: -5px;
+  }
+
+  .talqs > .talqs_main > .talqs_subqs > .talqs_main > .talqs_index:before {
+    content: '（';
+    margin-right: 5px;
+  }
+
+  .talqs > .talqs_main > .talqs_subqs > .talqs_main > .talqs_index:after {
+    content: '）';
+    margin-left: 5px;
+  }
+
+  .talqs > .talqs_main > .talqs_subqs > .talqs_main .talqs_main > .talqs_index:before {
+    content: '（';
+  }
+
+  .talqs > .talqs_main > .talqs_subqs > .talqs_main .talqs_main > .talqs_index:after {
+    content: '）';
+  }
+
+  .talqs > .talqs_main > .talqs_subqs > .talqs_main .talqs_content, .talqs > .talqs_main > .talqs_subqs > .talqs_main .talqs_options, .talqs > .talqs_main > .talqs_subqs > .talqs_main .talqs_subqs {
+    margin-left: 3em;
+  }
+
+  .talqs > .talqs_main > .talqs_subqs > .talqs_main .talqs_subqs .talqs_content, .talqs > .talqs_main > .talqs_subqs > .talqs_main .talqs_subqs .talqs_options {
+    margin-left: 1.5em;
+  }
+
+  .talqs .talqs_tree ul {
+    list-style: none;
+    line-height: 32px;
+    list-style-type: none;
+    padding-left: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .talqs .talqs_tree li {
+    margin: 0;
+    padding: 0 12px;
+    position: relative;
+  }
+
+  .talqs .talqs_tree li::before, .talqs .talqs_tree li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .talqs .talqs_tree li::before {
+    border-top: 1px solid #999;
+    top: 14px;
+    width: 11px;
+    height: 0;
+  }
+
+  .talqs .talqs_tree li:after {
+    border-left: 1px solid #999;
+    height: 100%;
+    width: 0px;
+    top: -15px;
+  }
+
+  .talqs .talqs_tree > li::after {
+    top: 14px;
+  }
+
+  .talqs .talqs_tree > li:last-child::after {
+    display: none;
+  }
+
+  .talqs .div.MathJax_SVG_Display text, .talqs .mathjax_content text {
+    font-size: 16px;
+  }
+
+  .talqs .div.MathJax_SVG_Display svg, .talqs .mathjax_content svg {
+    max-width: 100%;
+  }
+
+  .talqs .div.MathJax_SVG_Display [tabindex], .talqs .mathjax_content [tabindex] {
+    outline: none;
+  }
+
+  @media (max-width: 1024px) {
+    .talqs * {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .talqs body {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .talqs a, .talqs img {
+      -webkit-touch-callout: none;
+    }
+  }
+
+  .talqs .talqs_main .talqs_options .talqs_options_list .talqs_options_rows {
+    list-style-type: none;
+  }
+
+  .talqs .talqs_main .talqs_options .talqs_options_list .talqs_options_rows * {
+    list-style-type: none;
+  }
+
+  .talqs .talqs_main .talqs_subqs .talqs_main .talqs_content ol * {
+    list-style-type: decimal;
+    overflow: visible;
+  }
+
+  .talqs *::-webkit-scrollbar {
+    display: none; /*隐藏滚轮*/
+  }
+
+  .quizContent .board-header {
+    height: 80px;
+    margin: -25px -30px 0 -30px;
+    background: url("http://st.hfjy.com/sk/images/watermark/board_hf.png") left 0 no-repeat;
+  }
+
+  .quizContent .board-watermark {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    box-sizing: border-box;
+    border-top: 30px solid transparent;
+    border-bottom: 80px solid transparent;
+  }
+
+  .quizContent .board-watermark div {
+    width: 100%;
+    height: 100%;
+    background: url("http://st.hfjy.com/sk/images/watermark/whitebankbg.png") top;
+  }
+
+  .quizContent .board-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: url("http://st.hfjy.com/sk/images/watermark/board_hf.png") right -80px no-repeat;
+  }</style>
+  <div class="board-header"></div>
+  <dd>设点
+    <f style='width:9px;'>F</f>
+    是抛物
+    <f style='width:8px;'>L</f>
+    <f style='width:16px;'>：</f>
+    <f style='width:8px;'>y</f>
+    <sup>
+      <f style='width:9px;'>2</f>
+    </sup>=
+    <f style='width:26px;'>2px</f>
+    （
+    <f style='width:9px;'>p</f>
+    ＞
+    <f style='width:10px;'>0</f>
+    ）的焦点
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:5px;'>1</f>
+    </sub>
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>2</f>
+    </sub>
+    <f style='width:16px;'>，</f>
+    …
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>n</f>
+    </sub>是抛物线
+    <f style='width:8px;'>L</f>
+    上的
+    <f style='width:9px;'>n</f>
+    个不同的点
+    <f style='width:9px;'>n</f>
+    （
+    <f style='width:9px;'>n</f>
+    ≥
+    <f style='width:9px;'>3</f>
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>n</f>
+    ∈
+    <f style='width:11px;'>N</f>
+    <sup>*</sup>）．<br>（
+    <f style='width:5px;'>1</f>
+    ）当
+    <f style='width:9px;'>p</f>
+    =
+    <f style='width:9px;'>2</f>
+    时
+    <f style='width:16px;'>，</f>
+    试写出抛物线
+    <f style='width:8px;'>L</f>
+    上三点
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:5px;'>1</f>
+    </sub>
+    <f style='width:16px;'>、</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>2</f>
+    </sub>
+    <f style='width:16px;'>、</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>3</f>
+    </sub>的坐标
+    <f style='width:16px;'>，</f>
+    时期满足<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/0.png">；<br>（
+    <f style='width:9px;'>
+      <f style='width:9px;'>2</f>
+    </f>
+    ）当
+    <f style='width:9px;'>
+      <f style='width:9px;'>n</f>
+    </f>
+    ≥
+    <f style='width:9px;'>
+      <f style='width:9px;'>3</f>
+    </f>
+    时
+    <f style='width:16px;'>，</f>
+    若<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/1.png">
+    <f style='width:16px;'>，</f>
+    求证
+    <f style='width:16px;'>：</f>
+    <img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/2.png">；<br>（
+    <f style='width:9px;'>3</f>
+    ）当
+    <f style='width:9px;'>n</f>
+    ＞
+    <f style='width:9px;'>3</f>
+    时
+    <f style='width:16px;'>，</f>
+    某同学对（
+    <f style='width:9px;'>2</f>
+    ）的逆命题
+    <f style='width:16px;'>，</f>
+    即
+    <f style='width:16px;'>：</f>
+    <f style='width:6px;'>“</f>
+    若<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/3.png">
+    <f style='width:16px;'>，</f>
+    则<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/4.png">
+    <f style='width:6px;'>”</f>
+    开展了研究并发现其为假命题．<br>请你就此从以下三个研究方向中任选一个开展研究
+    <f style='width:16px;'>：</f>
+    <br>
+    <f style='width:5px;'>1</f>
+    ．试构造一个说明该命题确实是假命题的反例；<br>
+    <f style='width:9px;'>2</f>
+    ．对任意给定的大于
+    <f style='width:9px;'>3</f>
+    的正整数
+    <f style='width:9px;'>n</f>
+    <f style='width:16px;'>，</f>
+    试构造该假命题反例的一般形式
+    <f style='width:16px;'>，</f>
+    并说明你的理由
+    <f style='width:16px;'>：</f>
+    <br>
+    <f style='width:9px;'>3</f>
+    ．如果补充一个条件后能使该命题为真
+    <f style='width:16px;'>，</f>
+    请写出你认为需要补充的一个条件
+    <f style='width:16px;'>，</f>
+    并说明加上该条件后
+    <f style='width:16px;'>，</f>
+    能使该逆命题为真命题的理由．<br></dd>
+  <div class="board-watermark">
+    <div></div>
+  </div>
+  <div class="board-footer"></div>
+  <script>var BOTTOM_HEIGHT = 1000;
+  var QUIZ_MIN_HEIGHT = 2200;
+  window.onload = function () {
+    var content = document.getElementsByClassName('quizContent')[0];
+    var watermark = document.getElementsByClassName('board-watermark')[0];
+    var footer = document.getElementsByClassName('board-footer')[0];
+    var contentHeight = content.scrollHeight;
+    var footerHeight = footer.scrollHeight;
+    contentHeight = contentHeight < QUIZ_MIN_HEIGHT ? QUIZ_MIN_HEIGHT : contentHeight;
+    contentHeight += BOTTOM_HEIGHT;
+    watermark.style.height = contentHeight + 'px';
+    footer.style.top = (contentHeight - footerHeight) + 'px';
+  }</script>
+  <dd>设点
+    <f style='width:9px;'>F</f>
+    是抛物
+    <f style='width:8px;'>L</f>
+    <f style='width:16px;'>：</f>
+    <f style='width:8px;'>y</f>
+    <sup>
+      <f style='width:9px;'>2</f>
+    </sup>=
+    <f style='width:26px;'>2px</f>
+    （
+    <f style='width:9px;'>p</f>
+    ＞
+    <f style='width:10px;'>0</f>
+    ）的焦点
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:5px;'>1</f>
+    </sub>
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>2</f>
+    </sub>
+    <f style='width:16px;'>，</f>
+    …
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>n</f>
+    </sub>是抛物线
+    <f style='width:8px;'>L</f>
+    上的
+    <f style='width:9px;'>n</f>
+    个不同的点
+    <f style='width:9px;'>n</f>
+    （
+    <f style='width:9px;'>n</f>
+    ≥
+    <f style='width:9px;'>3</f>
+    <f style='width:16px;'>，</f>
+    <f style='width:9px;'>n</f>
+    ∈
+    <f style='width:11px;'>N</f>
+    <sup>*</sup>）．<br>（
+    <f style='width:5px;'>1</f>
+    ）当
+    <f style='width:9px;'>p</f>
+    =
+    <f style='width:9px;'>2</f>
+    时
+    <f style='width:16px;'>，</f>
+    试写出抛物线
+    <f style='width:8px;'>L</f>
+    上三点
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:5px;'>1</f>
+    </sub>
+    <f style='width:16px;'>、</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>2</f>
+    </sub>
+    <f style='width:16px;'>、</f>
+    <f style='width:9px;'>P</f>
+    <sub>
+      <f style='width:9px;'>3</f>
+    </sub>的坐标
+    <f style='width:16px;'>，</f>
+    时期满足<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/0.png">；<br>（
+    <f style='width:9px;'>
+      <f style='width:9px;'>2</f>
+    </f>
+    ）当
+    <f style='width:9px;'>
+      <f style='width:9px;'>n</f>
+    </f>
+    ≥
+    <f style='width:9px;'>
+      <f style='width:9px;'>3</f>
+    </f>
+    时
+    <f style='width:16px;'>，</f>
+    若<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/1.png">
+    <f style='width:16px;'>，</f>
+    求证
+    <f style='width:16px;'>：</f>
+    <img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/2.png">；<br>（
+    <f style='width:9px;'>3</f>
+    ）当
+    <f style='width:9px;'>n</f>
+    ＞
+    <f style='width:9px;'>3</f>
+    时
+    <f style='width:16px;'>，</f>
+    某同学对（
+    <f style='width:9px;'>2</f>
+    ）的逆命题
+    <f style='width:16px;'>，</f>
+    即
+    <f style='width:16px;'>：</f>
+    <f style='width:6px;'>“</f>
+    若<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/3.png">
+    <f style='width:16px;'>，</f>
+    则<img
+      src="http://hf-quiz.oss-cn-hangzhou.aliyuncs.com/upimg/gzsx/STSource/20131024190751673940400/SYS201310241907516739404022_ST/4.png">
+    <f style='width:6px;'>”</f>
+    开展了研究并发现其为假命题．<br>请你就此从以下三个研究方向中任选一个开展研究
+    <f style='width:16px;'>：</f>
+    <br>
+    <f style='width:5px;'>1</f>
+    ．试构造一个说明该命题确实是假命题的反例；<br>
+    <f style='width:9px;'>2</f>
+    ．对任意给定的大于
+    <f style='width:9px;'>3</f>
+    的正整数
+    <f style='width:9px;'>n</f>
+    <f style='width:16px;'>，</f>
+    试构造该假命题反例的一般形式
+    <f style='width:16px;'>，</f>
+    并说明你的理由
+    <f style='width:16px;'>：</f>
+    <br>
+    <f style='width:9px;'>3</f>
+    ．如果补充一个条件后能使该命题为真
+    <f style='width:16px;'>，</f>
+    请写出你认为需要补充的一个条件
+    <f style='width:16px;'>，</f>
+    并说明加上该条件后
+    <f style='width:16px;'>，</f>
+    能使该逆命题为真命题的理由．<br></dd>
+  <dt>[学生答案]</dt>
+  <dd><img class="input-img"
+           src="http://hf-learning-test.oss-cn-hangzhou.aliyuncs.com/20180712/31242_jjicl67gg1lhw1m7vi.png"/></dd>
+</dl>
+</div>
+</body>
+</html>

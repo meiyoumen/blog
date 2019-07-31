@@ -1,0 +1,142 @@
+<!--Created by Administrator on 2019/7/26.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="nav">
+  <a href="/page1">page1</a>
+  <a href="/page2">page2</a>
+  <a href="/page3">page3</a>
+  <a href="/page4">page4</a>
+  <a href="/page5">page5</a>
+  <button id="btn">page2</button>
+</div>
+<div id="container">
+</div>
+</body>
+<script type="text/javascript">
+  /**
+   history 在修改 url 后，虽然页面并不会刷新，但我们在手动刷新，或通过 url 直接进入应用的时候，
+   服务端是无法识别这个 url 的。
+   因为我们是单页应用，只有一个 html 文件，服务端在处理其他路径的 url 的时候，就会出现404的情况。
+   所以，如果要应用 history 模式，需要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回单页应用的 html 文件。
+   */
+  class HistoryRouter {
+    constructor() {
+      this.routers = {}
+      this.listenPopState()
+      this.listenLink()
+
+    }
+
+    /**
+     * 用于处理 '前近' & '后退' 时回调对应的函数
+     * history.pushState() 或者 history.replaceState() 不会触发 popstate 事件。
+     * opstate事件只会在浏览器某些行为下触发， 比如点击后退、前进按钮(或者在JavaScript中调用history.back()、history.forward()、history.go()方法)。
+     */
+    listenPopState () {
+      window.addEventListener('popstate', (event) => {
+        let state = event.state
+        let path = state.path
+        this.dealPathHandler(path)
+        console.log(event.state)
+      }, false)
+    }
+
+    // 全局阻止A链接的默认事件，获取A链接的href属性，并调用 history.pushState 方法
+    listenLink () {
+      window.addEventListener('click', (event) => {
+        let dom = event.target
+        if (dom.tagName.toUpperCase() === 'A' && dom.getAttribute('href')) {
+          event.preventDefault()
+          this.assign(dom.getAttribute('href'))
+        }
+      })
+    }
+
+    load () {
+      this.dealPathHandler(window.location.pathname)
+    }
+
+    register(path, fn = () => {}) {
+      this.routers[path] = fn
+    }
+
+    registerNotFound(fn = () => {}) {
+      this.routers['404'] = fn
+    }
+
+    registerError(fn = () => {}) {
+      this.routers['error'] = fn
+    }
+
+    // 跳转到path
+    assign (path) {
+      /**
+       history.pushState() 和 history.replaceState() 均接收三个参数（state, title, url）
+         state：合法的 Javascript 对象，可以用在 popstate 事件中
+         title：现在大多浏览器忽略这个参数，可以直接用 null 代替
+         url：任意有效的 URL，用于更新浏览器的地址栏
+
+          history.pushState() 在保留现有历史记录的同时，将 url 加入到历史记录中
+       */
+      window.history.pushState({path}, null, path)
+      this.dealPathHandler(path)
+    }
+
+
+    /**
+     * 替换path
+     * history.replaceState() 会将历史记录中的当前页面历史替换为 url。
+     * history.replaceState() 的使用与 history.pushState() 非常相似，区别在于 replaceState() 是修改了当前的历史记录项而不是新建一个。
+     * @param path
+     */
+    replace (path) {
+      window.history.replaceState({path}, null, path)
+      this.dealPathHandler(path)
+    }
+
+    //通用处理 path 调用回调函数
+    dealPathHandler(path) {
+      let handler
+      if (!this.routers.hasOwnProperty(path)) {
+        handler = this.routers['404']
+      } else if (this.routers.hasOwnProperty(path)) {
+        handler = this.routers[path]
+      }
+
+      try {
+        handler.apply(this, ['hello'])
+      } catch (e) {
+        (this.routers['error']).call(this, e)
+      }
+    }
+  }
+
+  let router = new HistoryRouter()
+  let container = document.getElementById('container')
+
+  //注册首页回调函数
+  router.register('/', () => container.innerHTML = '我是首页')
+  router.register('/page1', (msg) => container.innerHTML = '我是page1' + msg)
+
+  router.register('/page2', () => container.innerHTML = '我是page2')
+
+  router.register('/page3', () => container.innerHTML = '我是page3')
+
+  router.register('/page4', () => {
+    throw new Error('抛出一个异常')
+  })
+
+
+  router.registerError((e) => container.innerHTML = '页面异常，错误消息： ' + e.message)
+  router.registerNotFound(() => container.innerHTML = '404页面未找到')
+
+
+  //加载视图
+  router.load()
+</script>
+</html>

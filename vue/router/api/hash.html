@@ -1,0 +1,81 @@
+<!--Created by Administrator on 2019/7/26.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="nav">
+  <a href="#/page1">page1</a>
+  <a href="#/page2">page2</a>
+  <a href="#/page3">page3</a>
+  <a href="#/page4">page4</a>
+</div>
+<div id="container"></div>
+</body>
+<script>
+  class HashRouter {
+    constructor() {
+      this.routers = {}
+      window.addEventListener('hashchange', this.load.bind(this))
+    }
+
+    register(hash, fn = () => {}) {
+      this.routers[hash] = fn
+    }
+
+    registerNotFound(fn = () => {
+    }) {
+      this.routers['404'] = fn
+    }
+
+    registerError(fn = () => {
+    }) {
+      this.routers['error'] = fn
+    }
+
+    //用于调用不同视图的回调函数
+    load() {
+      let hash = window.location.hash.slice(1)
+      let handler
+      if (!hash) {
+        handler = this.routers['/']
+      } else if (this.routers[hash]) {
+        handler = this.routers[hash]
+      } else {
+        handler = this.routers['404']
+      }
+
+      try {
+        handler.apply(this, ['hello'])
+      } catch (e) {
+        (this.routers['error']).call(this, e)
+      }
+    }
+  }
+
+  let router = new HashRouter()
+  let container = document.getElementById('container')
+
+  //注册首页回调函数
+  router.register('/', () => container.innerHTML = '我是首页')
+  router.register('/page1', (msg) => container.innerHTML = '我是page1' + msg)
+
+  router.register('/page2', () => container.innerHTML = '我是page2')
+
+  router.register('/page3', () => container.innerHTML = '我是page3')
+
+  router.register('/page4', () => {
+    throw new Error('抛出一个异常')
+  })
+
+
+  router.registerError((e) => container.innerHTML = '页面异常，错误消息： ' + e.message)
+  router.registerNotFound(() => container.innerHTML = '404页面未找到')
+
+
+  //加载视图
+  router.load()
+</script>
+</html>

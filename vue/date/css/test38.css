@@ -1,0 +1,415 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+ul,
+li {
+  list-style: none;
+}
+input {
+  border: none;
+  outline: none;
+}
+body {
+  padding: 20px;
+}
+a {
+  color: #000;
+}
+.datePanel {
+  border: 1px solid #efefef;
+}
+.datePanel .opr {
+  width: 220px;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 24px;
+  text-align: center;
+  padding: 2px 0px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.datePanel .opr a {
+  display: block;
+  width: 20px;
+  line-height: 20px;
+}
+.datePanel .opr a:nth-of-type(2),
+.datePanel .opr a:nth-of-type(3) {
+  margin: 0px 5px;
+}
+.datePanel .opr span {
+  display: block;
+  width: 40px;
+  font-size: 12px;
+  line-height: 20px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.datePanel .opr span:hover {
+  background-color: #e0f3e0;
+}
+.datePanel .opr span:nth-of-type(2) {
+  margin-left: 5px;
+}
+.datePanel .tabCont {
+  height: 251px;
+  width: 220px;
+}
+.datePanel .pickerDate .midHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #e0f3e0;
+  padding: 0px 5px;
+}
+.datePanel .pickerDate .midHeader li {
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.datePanel .pickerDate .midCont {
+  width: 210px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  padding: 5px 5px;
+}
+.datePanel .pickerDate .midCont li {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.datePanel .pickerDate .midCont li:not(.disabled):hover {
+  background-color: #e0f3e0;
+}
+.datePanel .pickerDate .midCont li.wDay {
+  color: #FF2F2F;
+}
+.datePanel .pickerDate .midCont li.otherDay {
+  color: #6A6AFF;
+}
+.datePanel .pickerDate .midCont li.cur {
+  background-color: #829a82 !important;
+  color: #fff;
+}
+.datePanel .pickerDate .midCont li.disabled {
+  color: #aaaaaa;
+  cursor: text;
+}
+.datePanel .pickerDate .btnBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding: 5px 5px;
+  border-top: 1px solid #efefef;
+}
+.datePanel .pickerDate .btnBox input[type=button] {
+  display: block;
+  height: 20px;
+  padding: 0px 5px;
+  margin-left: 10px;
+  background-color: #ec5463;
+  color: #ffffff;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.datePanel .pickerDate .btnBox input[type=button]:hover {
+  background-color: #f95969;
+}
+.datePanel .pickerYear {
+  border-top: 1px solid #efefef;
+}
+.datePanel .pickerYear .yearList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  padding: 5px 15px 0px 15px;
+}
+.datePanel .pickerYear .yearList li {
+  height: 20px;
+  line-height: 20px;
+  width: 40px;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  margin: 5px 0px 0px 10px;
+}
+.datePanel .pickerYear .yearList li:nth-of-type(4n+1) {
+  margin-left: 0px;
+}
+.datePanel .pickerYear .yearList li:hover {
+  background-color: #e0f3e0;
+}
+.datePanel .pickerYear .yearList li.cur {
+  background-color: #829a82;
+  color: #fff;
+}
+.datePanel .pickerYear .yearBtnBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.datePanel .pickerYear .yearBtnBox a {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #888888;
+}
+.datePanel .pickerYear .yearBtnBox a:nth-of-type(2) {
+  margin: 0px 20px;
+}
+.datePanel .pickerYear .yearBtnBox a:hover {
+  color: #000000;
+}
+.datePanel .pickerMonth {
+  border-top: 1px solid #efefef;
+}
+.datePanel .pickerMonth .monthList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  padding: 5px 15px 0px 30px;
+}
+.datePanel .pickerMonth .monthList li {
+  height: 20px;
+  line-height: 20px;
+  width: 40px;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  margin: 25px 0px 0px 20px;
+  font-size: 12px;
+}
+.datePanel .pickerMonth .monthList li:nth-of-type(3n+1) {
+  margin-left: 0px;
+}
+.datePanel .pickerMonth .monthList li:hover {
+  background-color: #e0f3e0;
+}
+.datePanel .pickerMonth .monthList li.cur {
+  background-color: #829a82;
+  color: #fff;
+}
+.datePanel .pickerMonth .monthBtnBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 10px;
+}
+.datePanel .pickerMonth .monthBtnBox a {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #888888;
+}
+.datePanel .pickerMonth .monthBtnBox a:hover {
+  color: #000000;
+}
+.datePickerBox {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 180px;
+}
+.datePickerBox .datePanel {
+  position: absolute;
+  left: 0px;
+  background-color: #fff;
+  top: 34px;
+}
+.datePickerBox .header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  border: 1px solid #efefef;
+  background-color: #F4F8FB;
+  padding: 0px 10px 0px 0px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+}
+.datePickerBox .header .val {
+  height: 34px;
+  line-height: 34px;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.dateRangeBox {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 260px;
+}
+.dateRangeBox .rangeHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #efefef;
+  background-color: #F4F8FB;
+  padding: 0px 10px 0px 0px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+}
+.dateRangeBox .rangeHeader .val {
+  height: 34px;
+  line-height: 34px;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 0px 10px;
+}
+.dateRangeBox .rangePanel {
+  position: absolute;
+  background-color: #fff;
+  top: 34px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 1;
+}
+.dateRangeBox .rangePanel .leftOpr {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  padding: 0px 10px 0px 10px;
+  border: 1px solid #efefef;
+  border-right: none;
+}
+.dateRangeBox .rangePanel .leftOpr .rangeUl {
+  height: 280px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20px 0px;
+}
+.dateRangeBox .rangePanel .leftOpr .rangeUl li {
+  background-color: #f5f5f5;
+  height: 26px;
+  line-height: 26px;
+  color: #08c;
+  width: 140px;
+  padding: 0px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.dateRangeBox .rangePanel .leftOpr .rangeUl li:hover {
+  color: #ffffff;
+  background-color: #08c;
+}
+.dateRangeBox .rangePanel .leftOpr .btnBox input {
+  height: 30px;
+  background-color: #ec5463;
+  font-size: 12px;
+  color: #ffffff;
+  width: 60px;
+  border-radius: 5px;
+}
+.dateRangeBox .rangePanel .leftOpr .btnBox input:hover {
+  background-color: #f95969;
+}
+.dateRangeBox .rangePanel .rightOpr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 440px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+.dateRangeBox .rangePanel .rangeItem {
+  display: block;
+  width: 220px;
+}
+.dateRangeBox .rangePanel .rangeItem .eachHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 20px;
+  line-height: 20px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #efefef;
+  border-bottom: none;
+}
+.dateRangeBox .rangePanel .rangeItem .eachHeader i {
+  display: block;
+  margin: 0px 5px 0px 10px;
+}
+.dateRangeBox .rangePanel .rangeItem .eachHeader .text {
+  font-size: 12px;
+  color: #ccc;
+}
+.dateRangeBox .rangePanel .rangeItem .eachHeader .text.hasVal {
+  color: #333;
+}
+.dateRangeBox .rangePanel .rangeItem .datePanel .btnBox input[value="确认"] {
+  display: none;
+}
+.dateRangeBox .rangePanel .pickTip {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #efefef;
+  border-top: none;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.dateRangeBox .rangePanel .pickTip i {
+  display: block;
+}
+.dateRangeBox .rangePanel .pickTip .text {
+  color: #FF2F2F;
+  margin-left: 10px;
+}

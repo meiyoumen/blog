@@ -11,58 +11,72 @@
   <button type="button" @click="send2()">$bus.$emit</button>
 </div>
 <script>
-  let $bus
+  // const EventBus = {
+  //   installed: false,
+  //   install: (Vue, options = {}) => {
+  //     console.log(options)
+  //     if(this.installed) return
+  //     let $bus
+  //     if ($bus) return
+  //     $bus = Vue.prototype.$bus = new Vue()
+  //     if ($bus && $bus.on) {
+  //       $bus.$emit = $bus.emit.bind($bus)
+  //       $bus.$on = $bus.on.bind($bus)
+  //       $bus.$once = $bus.once.bind($bus)
+  //       $bus.$off = $bus.off.bind($bus)
+  //     } else {
+  //       $bus.emit = $bus.$emit.bind($bus)
+  //       $bus.on = $bus.$on.bind($bus)
+  //       $bus.once = $bus.$once.bind($bus)
+  //       $bus.off = $bus.$off.bind($bus)
+  //     }
+  //   }
+  // }
 
-  const GloakEvents = {
+  const EventBus = {
     installed: false,
-    install: (Vue, options = {}) => {
-      console.log(options)
+    install: (Vue) => {
       if(this.installed) return
-      if ($bus) return
-      $bus = Vue.prototype.$bus = new Vue()
-      if ($bus && $bus.on) {
-        $bus.$emit = $bus.emit.bind($bus)
-        $bus.$on = $bus.on.bind($bus)
-        $bus.$once = $bus.once.bind($bus)
-        $bus.$off = $bus.off.bind($bus)
-      } else {
-        $bus.emit = $bus.$emit.bind($bus)
-        $bus.on = $bus.$on.bind($bus)
-        $bus.once = $bus.$once.bind($bus)
-        $bus.off = $bus.$off.bind($bus)
-      }
+      const Bus = new Vue({
+        methods: {
+          emit(event, ...args) {
+            this.$emit(event, ...args)
+          },
+          on(event, callback) {
+            this.$on(event, callback)
+          },
+          off(event, callback) {
+            this.$off(event, callback)
+          }
+        }
+      })
+      Vue.prototype.$bus = Bus
+      this.installed = true
     }
   }
 
-  const EventsListeners = {
-    showName() {
-      console.log('showName')
-    },
-    showAge() {
-      console.log('showAge')
-    }
-  }
-
-  Vue.use(GloakEvents, {decration: 'evnts'})
-
-  $bus.$on('$app:rm:showname', EventsListeners.showName)
-  $bus.$on('$app:rm:showage', EventsListeners.showAge)
-
-  let vm = new Vue({
+  Vue.use(EventBus, {decration: 'evnts'})
+  new Vue({
     el: '#app',
     data: {
       total: 0
     },
     methods: {
       send: function () {
-        this.$bus.emit('$app:rm:showname')
+        this.$bus.emit('showname')
       },
       send2: function () {
-        this.$bus.$emit('$app:rm:showage')
+        this.$bus.$emit('showage', 1)
       }
     },
     mounted() {
       console.log(this)
+      this.$bus.on('showname',  () => {
+        console.log('showName')
+      })
+      this.$bus.on('showage', (num) => {
+        console.log('showAge' + num)
+      })
     }
   })
 </script>

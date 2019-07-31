@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <ul>
+    <li v-for="(it, index) in list" :key="index" @click="getName(it)">
+      {{it.name}}  ---- {{it.id}}
+    </li>
+  </ul>
+</div>
+<script>
+
+  var mylist = []
+
+  for (let i =1; i< 20; i++) {
+    mylist.push({
+      name: 'AAAAA' + i,
+      id: 1000 + i
+    })
+  }
+
+  var vm = new Vue({
+    el: '#app',
+    data () {
+      return {
+        list: mylist
+      }
+    },
+    methods: {
+      getName (it) {
+        console.log(it.name)
+      },
+      remove (it) {
+
+      }
+    }
+  })
+</script>
+</body>
+</html>

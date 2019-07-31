@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>RunJS</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.1.0/vuex.js"></script>
+  <style>
+    body{background:#fff}
+    .box{}
+    .box p{margin-right:10px;float:left;background:#ddd;padding:5px;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <div>
+    <input v-model.number="count" />
+  </div>
+  <div class="box">
+    <count></count>
+  </div>
+</div>
+
+<script>
+  //vuex实例
+  var store = new Store({
+    state:{
+      count: 10,
+      countNumber:0
+    },
+    getters:{
+      count:function(state){
+        return state.count
+      },
+      countNumber:function(state){
+        return state.countNumber
+      },
+      square:function(state){
+        return state.count*state.count;
+      }
+    },
+    mutations: {
+      inc: function(state){
+        return state.count++;
+      },
+      dec:function(state){
+        return state.count--;
+      },
+      updateCount:function(state,value){
+        return state.count=value
+      },
+      upNumber:function(state){
+        return state.countNumber++;
+      }
+    },
+    actions:{
+      inc:function(context){
+        //此处可异步处理，执行一些判断
+        context.commit("inc");
+      },
+      dec:function(context){
+        context.commit("dec");
+      },
+      updateCount:function(context,value){
+        context.commit("updateCount",value)
+      },
+      upNumber:function(context){
+        context.commit("upNumber");
+      }
+    }
+  });
+
+  //count组件
+  var count={
+    template:`<p >data:{{countData}}==<span v-once>{{countNumber}}</span><br/>count：{{count}}<br/>count的平方：{{square}}<br/><br/>
+				<button @click="inc">+</button>
+				<button @click="dec">-</button>
+	</p>`,
+    data:function(){
+      return {countData:"Components datas"}
+    },
+    computed:{
+      count:Vuex.mapState({
+        count:"count",
+      }).count,
+      countNumber:Vuex.mapState({
+        countNumber:"countNumber"
+      }).countNumber,
+      square:Vuex.mapGetters({
+        square:"square"
+      }).square
+    },
+    methods:Vuex.mapActions({
+      inc:"inc",
+      dec:"dec"
+    }),
+    created:function(){
+      this.$store.dispatch("upNumber")
+    }
+  }
+
+  //vue实例
+  var app = new Vue({
+    el: '#app',
+    store,
+    computed:{
+      count:{
+        get:function(){
+          return this.$store.state.count;
+        },
+        set:function(value){
+          this.$store.dispatch("updateCount",value)
+        }
+
+      }
+    },
+    components:{'count':count}
+  })
+</script>
+</body>
+</html>
