@@ -1,0 +1,27 @@
+{
+  "name": "todo-vue",
+  "description": "vue todo demo",
+  "version": "0.0.1",
+  "main": "app.js",
+  "author": {
+    "user": "ueumd",
+    "email": "51134642@qq.com"
+  },
+  "scripts": {
+    "start": "rollup -c -w rollup.config.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "rollup": "^0.36.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-vue": "^2.4.2",
+    "rollup-watch": "^4.3.1",
+    "vue": "2.4.4",
+    "vue-router": "^2.7.0",
+    "vue-template-compiler": "^2.4.4"
+  }
+}
