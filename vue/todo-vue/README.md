@@ -3,7 +3,15 @@
 Vue常用的几种通信传递
 
 相关demo可以查看views文件夹下文件
-
+## evnets / broadcast
+````
+ events: {
+      getTitle(arg) {
+        this.title = arg || 'World'
+        console.log('[$broadcast.getTitle]', this.msg, arg)
+      }
+    },
+````
 ## props / emit
 
 父 -> 子 通过props给子页面传递参数
