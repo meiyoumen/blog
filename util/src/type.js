@@ -1,3 +1,7 @@
+function toStringType (val) {
+  return Object.prototype.toString.call(val).slice(8, -1)
+}
+
 export function type(obj) {
   /*
    * 每个对象都会从Object上继承到toString()方法，
@@ -28,7 +32,7 @@ export function type(obj) {
 export const isArray = Array.isArray
 
 export function isObject(arg) {
-  return (arg !== null) && (type(arg) == 'object')
+  return (arg !== null) && (toStringType (arg) == 'object')
 }
 
 export function isFunction(arg) {

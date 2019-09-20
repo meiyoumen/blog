@@ -1,0 +1,26 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "- indexedDB\r - sav-vuex\r - rollup-build\r - vue\r - shell",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ueumd/blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ueumd/blog/issues"
+  },
+  "homepage": "https://github.com/ueumd/blog#readme",
+  "devDependencies": {
+    "vuejs": "^3.0.1"
+  }
+}
