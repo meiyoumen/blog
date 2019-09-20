@@ -1,0 +1,22 @@
+﻿<meta charset="UTF-8">
+<script src="ajax.js"></script>
+<script>
+    /**
+     * 对封装好的ajax请求进行调用
+     * */
+    ajax({
+        url:"test.php", //请求地址
+        type:'GET',   //请求方式
+        data:{name:'zhangsan',age :'23',email:'2372734044@qq.com'}, //请求参数
+        dataType:"json",     // 返回值类型的设定
+        headers:{sessionId:Date.now(),token:'token123'},
+        success:function (response,xml) {
+            console.log(response);   //   此处执行请求成功后的代码
+        },
+        fail:function (status) {
+            console.log('状态码为'+status);   // 此处为执行成功后的代码
+        }
+    });
+
+    console.log("hello11111111111")
+</script>
