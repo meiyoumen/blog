@@ -1,16 +1,3 @@
-/**
- *AJAX——核心XMLHttpRequest对象
- *http://blog.csdn.net/liujiahan629629/article/details/17126727
- *
- *XMLHttpRequest2 新技巧
- * https://www.html5rocks.com/zh/tutorials/file/xhr2/
- *
- * https://xhr.spec.whatwg.org/#interface-formdata
- *
- * 你真的会使用XMLHttpRequest吗？*****
- * https://segmentfault.com/a/1190000004322487
- */
-
 function param(object) {
   let encodedString = ''
   for (let prop in object) {

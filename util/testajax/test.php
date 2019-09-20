@@ -9,9 +9,6 @@ $desc='请求成功!';
 if($code!=200){
     $desc='该手机号已注册!';
 }
-
-
-
 $arrJson =['A','B'];
 $arr = array (
     'code'=>$code,

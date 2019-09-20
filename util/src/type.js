@@ -9,19 +9,19 @@ export function type(obj) {
     return 'element'
   }
   return {
-    '[object Boolean]':   'boolean',
-    '[object Number]':    'number',
-    '[object String]':    'string',
-    '[object Function]':  'function',
-    '[object Array]':     'array',
-    '[object RegExp]':    'regExp',
+    '[object Boolean]': 'boolean',
+    '[object Number]': 'number',
+    '[object String]': 'string',
+    '[object Function]': 'function',
+    '[object Array]': 'array',
+    '[object RegExp]': 'regExp',
     '[object Undefined]': 'undefined',
-    '[object Null]':      'null',
-    '[object Object]':    'object',
-    '[object Math]':      'math',
-    '[object JSON]':      'json',
+    '[object Null]': 'null',
+    '[object Object]': 'object',
+    '[object Math]': 'math',
+    '[object JSON]': 'json',
     '[object Arguments]': 'arguments',
-    '[object Date]':      'date'
+    '[object Date]': 'date'
   }[Object.prototype.toString.call(obj)]
 }
 
@@ -33,4 +33,30 @@ export function isObject(arg) {
 
 export function isFunction(arg) {
   return typeof arg === 'function'
+}
+
+const PROMISE = Promise
+const promise = {
+  resolve: PROMISE.resolve.bind(PROMISE),
+  reject: PROMISE.reject.bind(PROMISE),
+  all: PROMISE.all.bind(PROMISE),
+  then: (resolve, reject) => {
+    return new PROMISE(resolve, reject)
+  }
+}
+
+export function toPromise(target, methods) {
+  let dist = Object.create(null)
+  methods.forEach((name) => {
+    dist[name] = function (...args) {
+      return promise.then((resolve, reject) => {
+        try {
+          return resolve(target[name].apply(target, args))
+        } catch (err) {
+          return reject(err)
+        }
+      })
+    }
+  })
+  return dist
 }

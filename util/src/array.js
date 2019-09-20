@@ -8,7 +8,6 @@ export function unique (arr) {
   return newArr
 }
 
-//PolyFill 数组去重
 Array.prototype.unique = function() {
   return Array.from(new Set(this));
 }
