@@ -1,0 +1,57 @@
+<meta charset="UTF-8">
+重新认识JavaScript面向对象: 从ES5到ES6
+https://segmentfault.com/a/1190000013186214
+<script>
+  /**
+   * 其实对于每一个实例对象studentx，其study方法的函数体是一模一样的，方法的执行结果只根据其实例对象决定，然而生成的每个实例都需要生成一个study方法去占用一份内存
+   */
+
+  // function Student (name, age, subject) {
+  //   this.name = name;
+  //   this.age = age;
+  //   this.subject = subject;
+  //   this.study = function() {
+  //     console.log('我在学习' + this.subject)
+  //   }
+  // }
+  //
+  // let student1 = new Student('阿辉', 22, '前端开发')
+  // let student2 = new Student('阿傻', 22, '大数据开发')
+  // student1.study()
+  // student2.study()
+  //
+  // console.log(student1.study === student2.study) //false
+</script>
+
+<script>
+  function Student (name, age, subject) {
+    this.name = name;
+    this.age = age;
+    this.subject = subject;
+  }
+  Student.prototype.study = function() {
+    console.log('我在学习' + this.subject)
+  }
+
+  var student1 = new Student('阿辉', 22, '前端开发')
+  var student2 = new Student('阿傻', 22, '大数据开发')
+  student1.study()
+  student2.study()
+
+  console.log(student1.study === student2.study) // true
+
+  // 小学生
+  function Pupil(school) {
+    this.school = school;
+  }
+
+  // 原型继承
+
+  // 那么如何让Pupil使用prototype继承Student呢? 其实我们只要将Pupil的prototype指向Student的一个实例即可。
+  Pupil.prototype = new Student('小辉', 8, '小学义务教育课程');
+
+  // 修正 Pupil.prototype.constructor 指向Pupil 而不是Student
+  Pupil.prototype.constructor = Pupil;
+
+  var pupil1 = new Pupil('北大附小');
+</script>

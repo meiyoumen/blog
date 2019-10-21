@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div>
+  <img id='img' src="" alt="">
+</div>
+<script>
+  // 没有使用代理模式
+  var delayload1 = (function(){
+    var img = document.querySelector("#img")
+    // img.src = "loading.gif";
+    img.style.backgoundColor="red"; // 需求改动 直接改代码 ，破坏了开放封闭原则
+    var newImg = document.createElement("img")
+    newImg.onload = function(){
+      img.src = newImg.src;
+    }
+    return function(src){
+      newImg.src = src;
+    }
+  })()
+
+  window.onload = ()=>{delayload1("jimmy.jpg")}
+</script>
+<script>
+  let delayload = () => {
+    var img = document.querySelector("#img")
+    return {
+      setSrc: function(src) {
+        img.src = src
+      },
+      setBg: function (color) {
+        img.style.backgoundColor = color
+      }
+    }
+  }
+  // 以接口的形式
+ let setImgSrc = () => {
+   var img = document.querySelector('#img')
+   return function(src){
+     console.log(src)
+     img.src = src
+   }
+ }
+
+ let setImg = setImgSrc()
+ let proxy = () => {
+   let newImg  = document.createElement('img')
+   setImg('https://b-gold-cdn.xitu.io/v3/static/img/logo.a7995ad.svg') // setImg('loading.gif') // 将来需求变动只需改这里
+   newImg.onload = function () {
+     setImg(newImg.src)
+   }
+
+   return function(src){
+     newImg.src = src
+   }
+ }
+
+ let proxyImg = proxy()
+ proxyImg('//static.zcool.cn/git_z/z/common/images/svg/logo.svg')
+
+</script>
+</body>
+</html>

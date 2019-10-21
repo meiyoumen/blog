@@ -1,0 +1,38 @@
+<meta charset="UTF-8">
+<script>
+  /**
+   在面向对象的编程中，代理模式的合理使用能够很好的体现下面两条原则:
+   单一职责原则:
+      面向对象设计中鼓励将不同的职责分布到细粒度的对象中，Proxy 在原对象的基础上进行了功能的衍生而又不影响原对象，符合松耦合高内聚的设计理念。
+   开放-封闭原则：
+      代理可以随时从程序中去掉，而不用对其他部分的代码进行修改，在实际场景中，随着版本的迭代可能会有多种原因不再需要代理，那么就可以容易的将代理对象换成原对象的调用
+   */
+
+  const getFib = (number) => {
+    if (number <= 2) {
+      return 1;
+    } else {
+      return getFib(number - 1) + getFib(number - 2);
+    }
+  }
+
+  const getCacheProxy = (fn, cache = new Map()) => {
+    return new Proxy(fn, {
+      apply(target, context, args) {
+        const argsString = args.join(' ');
+        if (cache.has(argsString)) {
+          // 如果有缓存,直接返回缓存数据
+          console.log(`输出${args}的缓存结果: ${cache.get(argsString)}`);
+
+          return cache.get(argsString);
+        }
+        const result = fn(...args);
+        cache.set(argsString, result);
+
+        return result;
+      }
+    })
+  }
+
+  getCacheProxy(getFib)
+</script>

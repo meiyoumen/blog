@@ -1,0 +1,28 @@
+<!--Created by Administrator on 2019/7/4.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  /**
+   * https://github.com/nodejs/node/blob/73ae2d1895c2c0d1d4eeaddd284c58d776d2be87/deps/v8/test/mjsunit/es6/arraybuffer-species.js
+   */
+  class ArrayBuffer {}
+  class SingletonArrayBuffer extends ArrayBuffer {
+    constructor(...args) {
+      if (SingletonArrayBuffer.cached) {
+        return SingletonArrayBuffer.cached
+      }
+      super(...args)
+      SingletonArrayBuffer.cached = this
+      this.type = args
+    }
+  }
+  let s = new SingletonArrayBuffer(5)
+
+</script>
+</body>
+</html>

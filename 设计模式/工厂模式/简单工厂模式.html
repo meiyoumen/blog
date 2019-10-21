@@ -1,0 +1,106 @@
+<!--Created by Administrator on 2019/7/8.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  /**
+   * 使用ES6重写简单工厂模式时，我们不再使用构造函数创建对象，而是使用class的新语法，并使用static关键字将简单工厂封装到User类的静态方法中:
+   */
+  class User1 {
+    //构造器
+    constructor(opt) {
+      this.name = opt.name;
+      this.viewPage = opt.viewPage;
+    }
+
+    static getInstance(role) {
+      switch (role) {
+        case 'superAdmin':
+          return new User1({ name: '超级管理员', viewPage: ['首页', '通讯录', '发现页', '应用数据', '权限管理'] })
+          break;
+        case 'admin':
+          return new User1({ name: '管理员', viewPage: ['首页', '通讯录', '发现页', '应用数据'] })
+          break;
+        case 'user':
+          return new User1({ name: '普通用户', viewPage: ['首页', '通讯录', '发现页'] })
+          break;
+        default:
+          throw new Error('参数错误, 可选参数:superAdmin、admin、user')
+      }
+    }
+  }
+
+  let superAdmin = User1.getInstance('superAdmin')
+  let admin = User1.getInstance('admin')
+  let user = User1.getInstance('user')
+</script>
+<script>
+  /**
+   * https://segmentfault.com/a/1190000014196851
+   在上文中我们提到，工厂方法模式的本意是将实际创建对象的工作推迟到子类中，这样核心类就变成了抽象类。
+   但是JavaScript的abstract是一个保留字，并没有提供抽象类，所以之前我们只是借鉴了工厂方法模式的核心思想。
+
+   虽然ES6也没有实现abstract，但是我们可以使用new.target来模拟出抽象类。new.target指向直接被new执行的构造函数，我们对new.target进行判断，如果指向了该类则抛出错误来使得该类成为抽象类。
+   */
+  class User {
+    constructor(type) {
+      if(new.target === User) {
+        throw new Error('抽像类不能实例化')
+      }
+      this.type = type
+    }
+  }
+
+  class UserOfWechat extends User {
+    constructor(name) {
+      super('wechat')
+      this.name = name =  ['首页', '通讯录', '发现页']
+    }
+  }
+
+  class UserOfQq extends User {
+    constructor(name) {
+      super('qq');
+      this.name = name;
+      this.viewPage = ['首页', '通讯录', '发现页']
+    }
+  }
+
+  class UserOfWeibo extends User {
+    constructor(name) {
+      super('weibo');
+      this.name = name;
+      this.viewPage = ['首页', '通讯录', '发现页']
+    }
+  }
+
+  function getAbstractUserFactory(type) {
+    switch (type) {
+      case 'wechat' :
+        return UserOfWechat;
+        break;
+      case 'qq':
+        return UserOfQq;
+        break;
+      case 'weibo':
+        return UserOfWeibo;
+        break;
+      default:
+        throw new Error('参数错误, 可选参数:superAdmin、admin、user')
+    }
+  }
+
+  let WechatUserClass = getAbstractUserFactory('wechat');
+  let QqUserClass = getAbstractUserFactory('qq');
+  let WeiboUserClass = getAbstractUserFactory('weibo');
+
+  let wechatUser = new WechatUserClass('微信小李');
+  let qqUser = new QqUserClass('QQ小李');
+  let weiboUser = new WeiboUserClass('微博小李');
+</script>
+</body>
+</html>

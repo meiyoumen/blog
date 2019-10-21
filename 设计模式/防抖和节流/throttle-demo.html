@@ -1,0 +1,37 @@
+<!--Created by Administrator on 2019/7/17.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body style="height: 3000px">
+<input id="search" type="text" name="search">
+<script>
+  const Throttle = {
+    add: function (fn, data = {delay: 0, context: window, args: 'hi'}) {
+      if (typeof fn === 'function') {
+        this.clear(fn)
+        fn._throttle = setTimeout(() => {
+          fn.call(null, data.args)
+        }, data.delay)
+      }
+    },
+
+    clear: function (fn) {
+      if (fn._throttle) {
+        clearTimeout(fn._throttle)
+      }
+    }
+  }
+  search.addEventListener('keyup', function () {
+    Throttle.add(
+      function (value) {
+        console.log(value)
+      },
+      {delay: 3000, args: this.value}
+    )
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  let handlers = {
+    get (target, property) {
+      if (!target.init) {
+        // 初始化对象
+        ['GET', 'POST'].forEach(method => {
+          target[method] = (url, params = {}) => {
+            return fetch(url, {
+              headers: {
+                'content-type': 'application/json'
+              },
+              mode: 'cors',
+              credentials: 'same-origin',
+              method,
+              ...params
+            }).then(response => response.json())
+          }
+        })
+      }
+
+      return target[property]
+    }
+  }
+
+  let API = new Proxy({}, handlers)
+
+  API.GET('XXX')
+  API.POST('XXX', {
+    body: JSON.stringify({name: 1})
+  })
+</script>
+</body>
+</html>

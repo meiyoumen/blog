@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<input id="phone" type="text" value="123">
+<script>
+  function debounce(fn, wait = 50, immediate) {
+    let timeout = null, result = null
+
+    let debounced = (...args) => {
+      if (timeout) clearTimeout(timeout)
+
+      // 立即执行一次
+      if (immediate && !timeout) {
+        result = fn.apply(this, args)
+      }
+
+      timeout = setTimeout(() => {
+        result = fn.apply(this, args)
+      }, wait)
+    }
+
+    debounced.cancel = () => {
+      clearTimeout(timeout)
+      timeout = null
+    }
+
+    return debounced
+  }
+  const betterFn = debounce((event) => console.log('fn 执行了 ', event), 3000, true)
+  document.querySelector('#phone').onkeyup = function (event) {
+    betterFn(event)
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!--Created by Administrator on 2019/7/4.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  class SingletonApple1 {
+    constructor(name, creator, products) {
+      //首次使用构造器实例
+      if (!SingletonApple1.instance) {
+        this.name = name;
+        this.creator = creator;
+        this.products = products;
+        //将this挂载到SingletonApple这个类的instance属性上
+        SingletonApple1.instance = this
+      }
+      return SingletonApple1.instance
+    }
+  }
+
+  let appleCompany = new SingletonApple1('苹果公司', '乔布斯', ['iPhone', 'iMac', 'iPad', 'iPod']);
+  let copyApple = new SingletonApple1('苹果公司', '阿辉', ['iPhone', 'iMac', 'iPad', 'iPod']);
+
+ // console.log(appleCompany === copyApple);  //true
+
+</script>
+<script>
+  //ES6的静态方法优化代码
+  /**
+   * 既然直接实例化浪费资源
+   */
+  class SingletonApple {
+    constructor(name, creator, products) {
+      this.name = name
+      this.creator = creator
+      this.products = products
+    }
+
+    /**
+     * 静态方法只能在静态方法中调用,不能在实例方法中调用。
+     * 将类中的方法设为静态方法也很简单，在方法前加上static关键字即可。这样该方法就不会被实例继承！
+     * @param name
+     * @param creator
+     * @param products
+     * @returns {SingletonApple|*}
+     */
+    static getInstance(name, creator, products) {
+      if (!this.instance) {
+        this.instance = new SingletonApple(name, creator, products)
+      }
+      return this.instance
+    }
+  }
+
+  let appleCompany1 = SingletonApple.getInstance('苹果公司', '乔布斯', ['iPhone', 'iMac', 'iPad', 'iPod'])
+  let copyApple1 = SingletonApple.getInstance('苹果公司', '阿辉', ['iPhone', 'iMac', 'iPad', 'iPod'])
+
+  console.log(appleCompany1 === copyApple1) //true
+</script>
+</body>
+</html>

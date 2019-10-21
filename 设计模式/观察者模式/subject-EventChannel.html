@@ -1,0 +1,68 @@
+<meta charset="UTF-8">
+<script>
+  /**
+   与观察者模式相比，发布订阅模式中间多了一层处理机制，用于解耦发布者和订阅者之间的关联
+   */
+  class EventChannel {
+    constructor() {
+      // 主题
+      this.events = {}
+    }
+
+    hasEvent (event) {
+      return this.events[event] ? true : false
+    }
+
+    /**
+     * 订阅的主题
+     * @param {String} event 主题
+     * @param {Function} callback 订阅者
+     */
+    on(event, callback) {
+      if (!this.events[event]) {
+        this.events[event] = []
+      }
+      this.events[event].push(callback)
+    }
+
+    /**
+     * 取消订阅
+     */
+
+    of(event, callback) {
+      if (!this.events[event]) {
+        return
+      }
+      const callbackList = this.events[event]
+      const  index = callbackList.indexOf(callback)
+      if (index > -1) {
+        callbackList.splice(index, 1)
+      } else {
+        delete this.events[event]
+      }
+    }
+
+    /**
+     * 发布主题
+     * @param {String} subject 主题
+     * @param {Argument} data 参数
+     */
+    emit(event, ...data) {
+      if (!this.events[event]) {
+        return
+      }
+      this.events[event].forEach(callback => {
+        callback(...data)
+      })
+    }
+  }
+
+  /**
+   * 通过 emit 向主题 update 发布一条消息， 在通过 on 来订阅 update 的主题来接受消息。
+   */
+  const channel = new EventChannel()
+  channel.on('update', function (data) {
+    console.log(`update value: ${data}`)
+  })
+  channel.emit('update', 123456) // update value: 123456
+</script>

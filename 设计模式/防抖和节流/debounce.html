@@ -1,0 +1,42 @@
+<!--Created by Administrator on 2019/7/17.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body style="height: 3000px">
+<div style="border: 1px dashed #ccc">
+  <input id="phone" type="text" value="123">
+</div>
+<script>
+  function debounce(fn, wait = 50, immediate) {
+    let timer = null
+    return function (...args) {
+      if (timer) clearTimeout(timer)
+      // ------ 新增部分 start ------
+      // immediate 为 true 表示第一次触发后执行
+      // timer 为空表示首次触发
+      if (immediate && !timer) {
+        fn.apply(this, args)
+      }
+      // ------ 新增部分 end ------
+
+      timer = setTimeout(() => {
+        fn.apply(this, args)
+      }, wait)
+    }
+  }
+
+  const betterFn = debounce(() => console.log('fn 执行了 '), 1000, true)
+
+  // 停止滑动 1 秒后执行函数 () => console.log('fn 防抖执行了')
+  // 加入immediate第一次触发 scroll 执行一次 fn，后续只有在停止滑动 1 秒后才执行函数 fn
+  document.addEventListener('scroll', betterFn)
+
+  document.querySelector('#phone').onkeyup = function (event) {
+    betterFn(event)
+  }
+</script>
+</body>
+</html>

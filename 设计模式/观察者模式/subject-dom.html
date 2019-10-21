@@ -1,0 +1,65 @@
+<meta charset="UTF-8">
+<script>
+  /**
+   DOM 事件中的观察者模式，这里回调函数就是一个观察者，订阅了 body 的 click 事件。所以当 body 触发 click 时，会触发回调。
+   document.body.addEventListener('click',function(e) {console.log('click body')},false)
+   */
+  class Dom {
+    constructor() {
+      // 订阅事件的观察者
+      this.events = {}
+    }
+
+    /**
+     * 添加事件的观察者
+     * @param {String} event  订阅的事件
+     * @param {Function} callback 回调函数(观察者)
+     */
+    addEventListener(event, callback) {
+      if (!this.events[event]) {
+        this.events[event] = []
+      }
+      this.events[event].push(callback)
+    }
+
+    removeEventListener(event, callback) {
+      if (!this.events[event]) {
+        return
+      }
+      const callbackList = this.events[event]
+      const  index = callbackList.indexOf(callback)
+      if (index > -1) {
+        callbackList.splice(index, 1)
+      } else {
+        delete this.events[event]
+      }
+    }
+
+    /**
+     * 触发事件
+     * @param {String} event
+     */
+    fireEvent(event) {
+      if (!this.events[event]) {
+        return
+      }
+      this.events[event].forEach(callback => {
+        callback()
+      })
+    }
+  }
+
+  const handler = () => {
+    console.log('fire click')
+  }
+
+  const dom  = new Dom()
+  dom.addEventListener('click', handler)
+  dom.removeEventListener('click', handler)
+  dom.addEventListener('click', handler)
+  dom.addEventListener('move', function () {
+    console.log('fire click2')
+  })
+
+  dom.fireEvent('click')
+</script>

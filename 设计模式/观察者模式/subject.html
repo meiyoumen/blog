@@ -1,0 +1,53 @@
+<meta charset="UTF-8">
+<script>
+  /**
+   * Subject  是一个主题
+   * Observer 是一个观察者
+   * 观察者可以订阅主题，主题发生变化会通知观察者。这是一个典型的观察者模式
+   */
+  class Subject {
+    constructor() {
+      // 订阅主题的观察者, subscriber
+      this.subs = []
+    }
+
+    // 订阅
+    subscribe(sub) {
+      this.subs.push(sub)
+    }
+
+    unsubscribe(sub) {
+      // 取消订阅
+      const index = this.subs.indexOf(sub)
+      if (index > -1) {
+        this.subs.splice(index, 1)
+      }
+    }
+
+    // 主题变化，通知订阅主题的观察者
+    fire() {
+      this.subs.forEach(sub => {
+        sub.notify()
+      })
+    }
+  }
+
+  class Observer {
+    constructor(data) {
+      this.data = data
+    }
+
+    notify() {
+      console.log(this.data)
+    }
+  }
+
+  let subject = new Subject()
+  let ob1 = new Observer('hello')
+  let ob2 = new Observer('world')
+
+  subject.subscribe(ob1)
+  subject.subscribe(ob2)
+
+  subject.fire()
+</script>
