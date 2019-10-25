@@ -1,4 +1,5 @@
-## 学习以及给内部分享的一些笔记
+# 学习以及给内部分享的一些笔记
+- [mysql](mysql)
 - [indexedDB](indexedDB)
 - [sav-vuex](sav-vuex)
 - [rollup-build](rollup-build)
@@ -13,4 +14,4 @@
 - [util 工具库](util)
 - [数据结构](数据结构)
 - [设计模式](设计模式)
-- [webpack4] (https://github.com/ueumd/webpack)
+- [webpack4](ueumd/webpack)
