@@ -1,9 +1,10 @@
-# 学习以及给内部分享的一些笔记
+# 学习分享笔记
 - [mysql](mysql)
 - [indexedDB](indexedDB)
 - [sav-vuex](sav-vuex)
 - [rollup-build](rollup-build)
-- [vue学习](vue)
+- [react](hello-react)
+- [vue](vue)
   - Vuex实现
   - router实现
   - todo-vue Vue常用的几种通信传递

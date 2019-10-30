@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>vuex</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <div><input v-model.number="count"/></div>
+  <div class="box">
+    <count></count>
+  </div>
+</div>
+
+<script>
+  let store = new Vuex.Store({
+    state: {
+      count: 10,
+      countNumber: 0
+    },
+    getters: {
+      count: function (state) {
+        return state.count
+      },
+      countNumber: function (state) {
+        return state.countNumber
+      },
+      square: function (state) {
+        return state.count * state.count
+      }
+    },
+    mutations: {
+      inc: function (state) {
+
+        return state.count++
+      },
+      dec: function (state) {
+        return state.count--
+      }
+    },
+    actions: {
+      inc: function (context) {
+        //此处可异步处理，执行一些判断
+        context.commit("inc")
+      },
+      dec: function (context) {
+        context.commit("dec")
+      }
+    }
+  })
+
+  // counter组件
+  let counter = {
+    template: `<div>
+                <button @click="inc">+</button>
+                <button @click="dec">-</button>
+                <div>
+                  <p>count：{{count}}</p>
+                  <p>count的平方：{{square}}</p>
+                </div>
+            </div> `,
+    data (){
+      return {
+        countData: "Components datas"
+      }
+    },
+
+    computed: {
+      ...Vuex.mapState({
+        count: state => state.count,
+        countNumber: state => state.countNumber
+      }),
+      square: Vuex.mapGetters({
+        square: "square"
+      }).square
+    },
+
+    methods: {
+      ...Vuex.mapActions({
+        inc: "inc",
+        dec: "dec"
+      })
+    }
+
+  }
+
+  let app = new Vue({
+    el: '#app',
+    store,
+    computed: {
+      count: {
+        get: function () {
+          return this.$store.state.count
+        },
+        set: function (value) {
+          this.$store.dispatch("updateCount", value)
+        }
+      }
+    },
+    components: {
+      count: counter
+    }
+  })
+</script>
+</body>
+</html>
