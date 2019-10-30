@@ -1,6 +1,7 @@
 ## src 
 - react
 - react-router
+- [react生命周期](react生命周期.pdf)
 ### src-myredux
 - util
     - redux
