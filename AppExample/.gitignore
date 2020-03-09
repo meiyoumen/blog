@@ -1,0 +1,7 @@
+node_modules
+.idea/
+Node/ftp/uploads
+node_modules3.0.0
+node_module*
+node_module*
+dist

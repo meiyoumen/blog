@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3-app-sub-window</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script src="core/shell.js"></script>
+  <script src="core/flux.js"></script>
+</head>
+<body>
+
+<div>
+  <button onclick="sendMsgToMainProcess('I am app-sub-window.html')">发送消息给主进程</button>
+</div>
+<div id="apppp">
+  <div>{{msg}}</div>
+</div>
+<script>
+  try {
+    // BrowserWindow 方式打开子窗口，是接收不到父窗口信息
+    window.flux = window.opener.flux
+    console.log(flux)
+  } catch (e) {
+    console.error(e)
+  }
+
+  let vm = new Vue({
+    el: '#apppp',
+    data () {
+      return {
+        msg: 124,
+      }
+    }
+  })
+  window.vm = vm
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>2-App-window-open页面</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script src="core/shell.js"></script>
+  <script src="core/flux.js"></script>
+  <style>
+    .main {border: 1px dashed #ccc; padding: 10px; margin: 10px}
+  </style>
+</head>
+<body>
+<div id="apppp">
+  <div class="main">{{msg}}</div>
+  <div class="main">
+    <button onclick="sendMsgToMainProcess()">发送消息给主进程</button>
+    <button onclick="openWindow()">打开新窗口</button>
+    <button type="button" @click="showName">showName</button>
+  </div>
+</div>
+
+<script>
+  window.flux = window.opener.flux
+  console.log(flux)
+
+  function openWindow() {
+    let o = window.open('http://127.0.0.1:8080/src/app-sub-window.html?' + Date.now())
+    console.log('new window', o)
+  }
+
+  let vm = new Vue({
+    el: '#apppp',
+    data () {
+      return {
+        msg: 'Hello I am index.html' || userName
+      }
+    },
+    methods: {
+      showName () {
+        return flux.studyModule.dispatch('showName', 'appWindowOpen - ' + Date.now()).then(res => {
+          console.log(res)
+        })
+      }
+    }
+  })
+  window.vm = vm
+</script>
+</body>
+</html>

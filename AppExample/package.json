@@ -1,0 +1,61 @@
+{
+  "name": "app-study",
+  "version": "1.0.0",
+  "description": "app-study demo",
+  "author": "hsd",
+  "main": "main.js",
+  "build": {
+    "productName": "app-study",
+    "appId": "com.ueumd.app-study",
+    "directories": {
+      "output": "dist",
+      "buildResources": "src"
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://127.0.0.1:8000/download/"
+      }
+    ],
+    "files": [
+      "src/**/*"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "build/icons/icon.icns",
+      "artifactName": "${productName}_setup_${version}.${ext}"
+    },
+    "win": {
+      "icon": "build/icons/icon.ico",
+      "artifactName": "${productName}_setup_${version}.${ext}"
+    },
+    "linux": {
+      "icon": "build/icons",
+      "artifactName": "${productName}_setup_${version}.${ext}"
+    }
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .  --inspect",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "5.0.7",
+    "electron-builder": "^21.1.1",
+    "electron-updater": "^4.1.2"
+  }
+}

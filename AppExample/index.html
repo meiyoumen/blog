@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>1-Index</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script src="src/core/shell.js"></script>
+  <script src="src/core/flux.js"></script>
+  <style>
+    .main {border: 1px dashed #ccc; padding: 10px; margin: 10px}
+  </style>
+</head>
+<body>
+<div id="apppp">
+  <div class="main">
+    <button onclick="sendMsgToMainProcess('I am index.html')">发送消息至主进程</button>
+    <button @click="showName">showName {{myName}}</button>
+    <span style="margin-left: 30px">{{msg}}</span>
+    <button type="button" onclick="renderTorender()">渲染进程与渲染进程通信</button>
+  </div>
+
+  <div class="main" style="float: left;width: 500px">
+    <button onclick="getGlobalData()">global获取全局共享数据</button>
+    <button onclick="updateGlobalData()">更新global全局共享数据</button>
+  </div>
+
+  <div class="main" style="float: left;width: 300px">
+    <button id="writeFile" onclick="writeFile()">writeFile</button>
+    <button id="readFile" onclick="readFile()">readFile</button>
+  </div>
+
+  <div class="main" style="clear: both">
+    <p>window.open 形式打开新窗口</p>
+    <button onclick="openWindow('app-window-open.html')">window.open</button>
+    <button onclick="openWindowModal('app-window-open.html')">window.open modal</button>
+    <button onclick="sendSubWindowMsg()">发送消息给子窗口</button>
+  </div>
+
+  <div class="main">
+    <p>BrowserWindow 形式打开新窗口</p>
+    <button onclick="openWindowByBrowserWindow('app-browser-window.html')">BrowserWindow</button>
+    <button onclick="sendToSecond()">发送消息给子窗口</button>
+  </div>
+
+</div>
+
+<script>
+
+  function openWindow(url) {
+    let o = window.open('http://127.0.0.1:8080/src/' + url + '?' + Date.now())
+    console.log('new window', o)
+  }
+
+  function openWindowModal(url) {
+    let o = window.open('http://127.0.0.1:8080/src/' + url + '?' + Date.now(), 'modalOpen')
+    console.log('new window', o)
+  }
+
+
+  // 写入文件
+  function writeFile() {
+    let fs = require('fs')
+    fs.writeFile('demo.txt', 'App Example', (err) => {
+      if (err) {
+        console.error('写入文件失败!', err)
+      } else {
+        console.log('写入文件成功!')
+      }
+    })
+  }
+
+  // 读取文件
+  function readFile() {
+    let fs = require('fs')
+    fs.readFile('input.txt', (err, chunk) => {
+      if (err) throw err
+      let sp = chunk.toString().split(',')
+      if (sp != null && sp.length > 0) {
+        let strp = ''
+        sp.forEach((str) => {strp = strp + str})
+        console.log(strp)
+      }
+    })
+  }
+
+  let vm = new Vue({
+    el: '#apppp',
+    data () {
+      return {
+        myName: 'Hello',
+        msg: 'Hello I am index.html' || userName
+      }
+    },
+    methods: {
+      showName () {
+        flux.dispatch.showName().then(res => {
+          console.log(res)
+          this.myName = res
+        })
+      }
+    }
+  })
+  window.vm = vm
+</script>
+</body>
+</html>
