@@ -1,0 +1,1 @@
+https://draveness.me/golang/keyword/golang-make-and-new.html
