@@ -1,4 +1,4 @@
-# 学习分享笔记
+# demo
 - [mysql](mysql)
 - [indexedDB](indexedDB)
 - [sav-vuex](sav-vuex)
@@ -22,7 +22,9 @@
 - [设计模式](设计模式)
 - [webpack4](ueumd/webpack)
 
+## 笔记
 - [C笔记](doc/C)
+- [C](https://github.com/ueumd/clang)
 - [Golang](doc/Golang)
 - [JS笔记](doc/JavaScript)
 - [Node.js](doc/node.js)
