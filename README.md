@@ -1,27 +1,3 @@
-# demo
-- [mysql](mysql)
-- [indexedDB](indexedDB)
-- [sav-vuex](sav-vuex)
-- [rollup-build](rollup-build)
-- [react](hello-react)
-	- react
-	- react-router
-	- redux/react-redex
-	- mbox
-	- react生命周期
-- [vue](vue)
-  - Vuex实现
-  - router实现
-  - todo-vue Vue常用的几种通信传递
-- shell 学习
-- [audio播放器](train/audio)
-- [canvas](train/canvas)
-- [flux模式](train/flux)
-- [util 工具库](util)
-- [数据结构](数据结构)
-- [设计模式](设计模式)
-- [webpack4](ueumd/webpack)
-
 ## 笔记
 - [C笔记](doc/C)
 - [C](https://github.com/ueumd/clang)
@@ -31,3 +7,18 @@
 - [TypeScript](doc/typescript)
 - [webpack](doc/webpack)
 - [mac](doc/webpack)
+
+## demo
+- [mysql](mysql)
+- [indexedDB](indexedDB)
+- [sav-vuex](sav-vuex)
+- [rollup-build](rollup-build)
+- [react](hello-react)
+- [vue](vue)
+- [audio播放器](train/audio)
+- [canvas](train/canvas)
+- [flux模式](train/flux)
+- [util 工具库](util)
+- [数据结构](数据结构)
+- [设计模式](设计模式)
+- [webpack4](ueumd/webpack)
